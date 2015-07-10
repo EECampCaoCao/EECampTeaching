@@ -37,7 +37,7 @@ class Controller(object):
         self.z_mom = Momentum(tau=0.5)
         self.zacc_mom = Momentum(tau=0.5)
 
-        self._pid_thetaxy = np.array([40., 1., 20])
+        self._pid_thetaxy = np.array([48., 40., 15.])
         self._pid_tweakper = np.array([1., 1., 1.])
 
         self._pids = {
@@ -159,7 +159,6 @@ class Controller(object):
         )
 
 
-        print(z_smooth, zacc_smooth)
         thrust_action = self._pids['acc_z'].get_control(
             now, 0 - z_smooth, 0 - zacc_smooth
         )
@@ -202,7 +201,7 @@ class Controller(object):
         else:
             final_action = np.full((4, ), -100.)
 
-        final_action[0] += 20
+        #final_action[0] += 20
         #final_action[1] += 4
         #final_action[2] += 10
         # final_action[1] = final_action[3] = -100.

@@ -26,7 +26,7 @@ def run_server():
 
     loop = asyncio.get_event_loop()
     try:
-        webbrowser.get('firefox').open(
+        webbrowser.open(
             "file://{}".format(
                 abspath(pjoin(dirname(abspath(__file__)), '..', 'WebDrone', 'index.html'))
             )
