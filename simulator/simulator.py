@@ -19,17 +19,20 @@ class Simulator(object):
         self._controller = Controller(self._drone, log=True)
         self._loop = asyncio.get_event_loop()
         self._drone.set_init([0., 0., 0.], [0., 0., 1.])
+        self.started = asyncio.Future()
         # self._AOO = []
         # self._drone.dt = 5e-4
         # self._drone.noise_z = 1e-10
 
+    @asyncio.coroutine
     def run(self):
         logger.info('starting simulation...')
-        self._loop.run_until_complete(self._controller.arm())
+        yield from self._controller.arm()
         self._loop.call_soon_threadsafe(
             self._loop.create_task,
             self._controller.run()
         )
+        self.started.set_result(True)
         logger.info('started.')
 
     @asyncio.coroutine

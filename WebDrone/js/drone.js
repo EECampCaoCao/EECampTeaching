@@ -50,9 +50,12 @@ var init = function() {
   camera.lookAt(new THREE.Vector3(0, 0, 0));
   scene.add(camera);
 
+  renderer.domElement.setAttribute("id", "main-canvas")
+  var container = document.getElementById('canvas-wrapper');
+  container.appendChild(renderer.domElement);
 
   var radius = 60;
-  controls = new THREE.TrackballControls(camera);
+  controls = new THREE.TrackballControls(camera, container);
   controls.rotateSpeed = 5;
   controls.zoomSpeed = 5;
   controls.panSpeed = 1;
@@ -63,8 +66,6 @@ var init = function() {
   controls.keys = [65, 83, 68]; // [ rotateKey, zoomKey, panKey ]
   controls.addEventListener('change', render);
 
-  renderer.domElement.setAttribute("id", "main-canvas")
-  document.getElementById('canvas-wrapper').appendChild(renderer.domElement);
 
 }
 

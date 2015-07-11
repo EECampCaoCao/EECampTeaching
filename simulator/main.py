@@ -21,10 +21,10 @@ def cleanup(coros):
         yield from coro
 
 def run_server():
-    server = SimServer()
+    loop = asyncio.get_event_loop()
+    server = SimServer(loop=loop)
     start_server = websockets.serve(server, 'localhost', 3000)
 
-    loop = asyncio.get_event_loop()
     try:
         webbrowser.open(
             "file://{}".format(

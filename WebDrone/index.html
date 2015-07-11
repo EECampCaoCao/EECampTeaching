@@ -1,28 +1,39 @@
 <html>
 	<head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/materialize.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
 		<title>My first Three.js app</title>
 	</head>
   <body>
     <div id="main-wrapper">
       <div id="control-panel">
-        <div class="control-panel-button"> Start </div>
+        <button class="btn waves-effect waves-light control-panel-button"
+          id="start-btn"> Start </button>
+        <button class="btn waves-effect waves-light control-panel-button"> Stop </button>
+        <button class="btn waves-effect waves-light control-panel-button"> Stop </button>
+        <button class="btn waves-effect waves-light control-panel-button"> Stop </button>
+        <button class="btn waves-effect waves-light control-panel-button"> Stop </button>
+        <button class="btn waves-effect waves-light control-panel-button"> Stop </button>
       </div>
-      <div id="canvas-wrapper"></div>
+      <div class="card-panel">
+        <div id="canvas-wrapper"> 
+        </div>
+      </div>
       <div id="status"></div>
     </div>
     <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto">
     </div>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js"></script>
-		<script src="three.js/loaders/ColladaLoader.js"></script>
-    <script src="three.js/controls/TrackballControls.js"></script>
-    <script src="jquery-2.1.4.min.js"></script>
+		<script src="js/three.js/loaders/ColladaLoader.js"></script>
+    <script src="js/three.js/controls/TrackballControls.js"></script>
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
     <script src="http://code.highcharts.com/stock/highstock.js"></script>
-    <script src="drone.js"></script>
-    <script src="comm.js"></script>
-    <script src="main.js"></script>
-    <script src="plot.js"></script>
+    <script src="js/drone.js"></script>
+    <script src="js/comm.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/plot.js"></script>
 
 	</body>
 </html>
