@@ -14,7 +14,6 @@ logger = logging.getLogger()
 class SimServer(object):
     def __init__(self, *, loop):
         self._sim = Simulator()
-        #self._sim.run()
         self._conns = []
         self._loop = loop
 
@@ -73,7 +72,6 @@ class SimServer(object):
     @asyncio.coroutine
     def send_loop(self, ws):
         res = yield from self._sim.started
-        print(res)
         if not res:
             return
         while ws.open:

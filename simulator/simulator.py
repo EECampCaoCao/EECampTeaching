@@ -7,7 +7,7 @@ import numpy as np
 
 from drone import SimpleVirtualDrone
 
-from controller import Controller
+from controller import SimpleController
 
 logger = logging.getLogger()
 
@@ -16,7 +16,7 @@ np.set_printoptions(precision=10, suppress=True)
 class Simulator(object):
     def __init__(self):
         self._drone = SimpleVirtualDrone()
-        self._controller = Controller(self._drone, log=True)
+        self._controller = SimpleController(self._drone, log=True)
         self._loop = asyncio.get_event_loop()
         #self._drone.set_init([0., 0., 0.], [0., 0., 1.])
         self.started = asyncio.Future()
@@ -30,7 +30,7 @@ class Simulator(object):
         yield from self._controller.arm()
         self._loop.call_soon_threadsafe(
             self._loop.create_task,
-            self._controller.run()
+            self._controller.start()
         )
         self.started.set_result(True)
         logger.info('started.')

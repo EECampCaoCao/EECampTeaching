@@ -84,7 +84,7 @@ var updateStatus = function(status) {
   theta.setFromRotationMatrix(ori);
   var x = (new Date()).getTime(); // current time
   if(window.lastx == undefined || window.lastx < x - 80) {
-    var y = theta._y;
+    var y = theta._x;
     //y = Math.random();
     series.addPoint([x, y], true, false);
     window.lastx = x;

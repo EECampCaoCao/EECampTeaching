@@ -34,6 +34,11 @@ class BaseVirtualDrone(BaseDrone):
         self.acc_sensor = np.array([0, 0, self.g])
         self.motor = np.zeros(4)
 
+        q = 0.4
+        self.rot = np.array([[1, 0, 0],
+                             [0, np.cos(q), -np.sin(q)],
+                             [0, np.sin(q), np.cos(q)]])
+
     def step(self, dt):
         raise NotImplementedError
 
@@ -41,7 +46,7 @@ class BaseVirtualDrone(BaseDrone):
         return self.loop.time()
 
     @asyncio.coroutine
-    def _run(self):
+    def run(self):
         last_time = self.get_time()
         while True:
             try:
@@ -59,7 +64,7 @@ class BaseVirtualDrone(BaseDrone):
 
     @asyncio.coroutine
     def start(self):
-        self._worker = self.loop.create_task(self._run())
+        self._worker = self.loop.create_task(self.run())
 
     def alive(self):
         return not self._worker.done()

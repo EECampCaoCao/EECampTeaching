@@ -5,4 +5,5 @@ CONST = {
     'max_thrust': 500,
     'max_anglexy': 10 * numpy.pi / 180,
     'max_anglez': 20 * numpy.pi / 180,
+    'thrust_restriction': 700,
 }
