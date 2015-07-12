@@ -78,8 +78,6 @@ class SimServer(object):
             return
         while ws.open:
             pos, ori = yield from self._sim.get_data()
-            pos = list(pos)
-            ori = list(ori.flatten())
             data = json.dumps({'pos':pos, 'ori':ori})
             yield from self._send(ws, data)
             yield from asyncio.sleep(0.02)

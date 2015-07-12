@@ -94,10 +94,10 @@ class Controller(object):
     @asyncio.coroutine
     def run(self):
         try:
-            yield from self._drone.start_control()
-            ready = yield from self._drone.get_ready()
-            if not ready:
-                return False
+            yield from self._drone.start()
+            #ready = yield from self._drone.pretest()
+            #if not ready:
+                #return False
 
             logger.info('controller start.')
             yield from self._run()

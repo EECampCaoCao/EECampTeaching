@@ -5,7 +5,7 @@ import logging
 # import matplotlib.pyplot as plt
 import numpy as np
 
-from .num_model import Drone
+from drone import SimpleVirtualDrone
 
 from controller import Controller
 
@@ -15,10 +15,10 @@ np.set_printoptions(precision=10, suppress=True)
 
 class Simulator(object):
     def __init__(self):
-        self._drone = Drone()
+        self._drone = SimpleVirtualDrone()
         self._controller = Controller(self._drone, log=True)
         self._loop = asyncio.get_event_loop()
-        self._drone.set_init([0., 0., 0.], [0., 0., 1.])
+        #self._drone.set_init([0., 0., 0.], [0., 0., 1.])
         self.started = asyncio.Future()
         # self._AOO = []
         # self._drone.dt = 5e-4
@@ -37,8 +37,8 @@ class Simulator(object):
 
     @asyncio.coroutine
     def get_data(self):
-        pos = self._drone.get_position()
-        ori = self._drone.rot
+        pos = list(self._drone.pos)
+        ori = list(self._drone.rot.flatten())
         # oori = ori[:, 2]
         # self._AOO.append(self._drone.acc_sensor[2])
         # self._AOO.append(oori)

@@ -154,12 +154,6 @@ class Drone(object):
         return acc + self.gvec, self.gettheta(), omega, z
 
 
-    def get_position(self):
-        return self.pos
-
-    def get_orientation(self):
-        return np.dot(self.rot, np.array([0., 0., 1.]))
-
     def set_init(self, vel, omega):
         self.vel = np.array(vel, dtype=np.float64)
         self.omega = np.array(omega, dtype=np.float64)
