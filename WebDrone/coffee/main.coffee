@@ -4,6 +4,6 @@ document.addEventListener "DOMContentLoaded", (event) ->
   $ '#start-btn' 
     .click () ->
       ws.send JSON.stringify
-          data: 'test'
+          action: 'start'
 
   
