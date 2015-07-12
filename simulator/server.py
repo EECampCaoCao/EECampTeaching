@@ -65,7 +65,6 @@ class SimServer(object):
             #yield from asyncio.sleep(0.02)
 
     def _preform_action(self, action):
-        print(action)
         if action == 'start':
             self._loop.create_task(self._sim.run())
 
