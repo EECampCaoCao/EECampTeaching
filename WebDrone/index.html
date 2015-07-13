@@ -15,7 +15,13 @@
         <button class="btn waves-effect waves-light control-panel-button"> Stop </button>
         <button class="btn waves-effect waves-light control-panel-button"> Stop </button>
         <button class="btn waves-effect waves-light control-panel-button"> Stop </button>
-      </div>
+		<form action="#">
+			<p class="range-field">
+				<input type="range" name="rangeinput" min="0" max="100" onchange="updateTextInput(this.value)"/>
+				<input type="text" id="textInput" value="">
+			</p>
+		</form>
+	  </div>
       <div class="card-panel">
         <div id="canvas-wrapper"> 
         </div>
@@ -34,6 +40,7 @@
     <script src="js/comm.js"></script>
     <script src="js/main.js"></script>
     <script src="js/plot.js"></script>
+	<script src="js/rangeslide.js"></script>
 
 	</body>
 </html>
