@@ -2,10 +2,13 @@
 (function() {
   document.addEventListener("DOMContentLoaded", function(event) {
     connect();
-    return $('#start-btn').click(function() {
-      return ws.send(JSON.stringify({
+    $('#start-btn').click(function() {
+      ws.send(JSON.stringify({
         action: 'start'
       }));
+    });
+	$('#reset-btn').click(function() {
+		controls.reset();
     });
   });
 

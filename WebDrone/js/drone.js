@@ -11,7 +11,7 @@
   };
 
   this.render = function() {
-    return this.renderer.render(scene, camera);
+    return window.renderer.render(scene, camera);
   };
 
   this.animate = function() {
@@ -24,7 +24,7 @@
     var axisHelper, container, radius;
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    this.renderer = new THREE.WebGLRenderer({
+    window.renderer = new THREE.WebGLRenderer({
       'antialias': false
     });
     renderer.setSize(window.innerWidth * 0.6, window.innerHeight * 0.6);
