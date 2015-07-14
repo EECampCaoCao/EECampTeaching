@@ -48,7 +48,7 @@
         series: [
           {
             name: 'Random data',
-            data: []
+            data: [0]
           }
         ]
       });
