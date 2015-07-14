@@ -9,10 +9,13 @@
   document.addEventListener("DOMContentLoaded", function(event) {
     root.connect();
     root.scene.start();
-    return $('#start-btn').click(function() {
+    $('#start-btn').click(function() {
       return root.ws.send(JSON.stringify({
         action: 'start'
       }));
+    });
+    return $('#reset-btn').click(function() {
+      return root.scene.controls.reset();
     });
   });
 

@@ -11,7 +11,7 @@
           useUTC: false
         }
       });
-      $('#container').highcharts('StockChart', {
+      $('#plot-wrapper').highcharts('StockChart', {
         chart: {
           marginRight: 10,
           events: {

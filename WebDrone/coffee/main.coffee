@@ -11,4 +11,8 @@ document.addEventListener "DOMContentLoaded", (event) ->
       root.ws.send JSON.stringify
           action: 'start'
 
+  $ '#reset-btn'
+    .click () ->
+      root.scene.controls.reset()
+
   

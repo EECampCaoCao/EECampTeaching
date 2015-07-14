@@ -56,10 +56,8 @@
     };
 
     Scene.prototype.updateStatus = function(status) {
-      var ori, pos, statusdiv, theta, x, y;
-      statusdiv = document.getElementById('status');
+      var ori, pos, theta, x, y;
       pos = new THREE.Vector3().fromArray(status.pos);
-      statusdiv.innerHTML = "(" + pos.x + ", " + pos.y + ", " + pos.z + ")";
       ori = new THREE.Matrix4();
       ori.set(status.ori[0], status.ori[1], status.ori[2], 0, status.ori[3], status.ori[4], status.ori[5], 0, status.ori[6], status.ori[7], status.ori[8], 0, 0, 0, 0, 1);
       theta = new THREE.Euler();
@@ -67,7 +65,7 @@
       x = (new Date()).getTime();
       if (window.lastx === void 0 || window.lastx < x - 100) {
         y = theta._x;
-        root.series.addPoint([x, y], true, false);
+        window.updateChart(y);
         window.lastx = x;
       }
       this.drone.position.copy(pos);

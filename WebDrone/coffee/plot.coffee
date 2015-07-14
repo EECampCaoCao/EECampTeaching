@@ -8,7 +8,7 @@ $ () ->
         global:
           useUTC: false
 
-      $ '#container'
+      $ '#plot-wrapper'
         .highcharts 'StockChart',
           chart:
             marginRight: 10,

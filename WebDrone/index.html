@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="stylesheets/materialize.css">
     <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>My first Three.js app</title>
   </head>
   <body>
@@ -12,10 +12,6 @@
         <button class="btn waves-effect waves-light control-panel-button"
           id="start-btn"> Start </button>
         <button class="btn waves-effect waves-light control-panel-button"> Stop </button>
-        <button class="btn waves-effect waves-light control-panel-button"> Stop </button>
-        <button class="btn waves-effect waves-light control-panel-button"> Stop </button>
-        <button class="btn waves-effect waves-light control-panel-button"> Stop </button>
-        <button class="btn waves-effect waves-light control-panel-button"> Stop </button>
         <form action="#">
           <p class="range-field">
             <input type="range" name="rangeinput" min="0" max="100" onchange="updateTextInput(this.value)"/>
@@ -23,10 +19,14 @@
           </p>
         </form>
       </div>
-      <div class="card-panel">
+      <div class="card-panel" style="position: relative">
         <div id="canvas-wrapper"> 
         </div>
+        <a class="btn-floating btn-large waves-effect waves-light red" 
+          id="reset-btn"><i class="material-icons">replay</i></a>
       </div>
+    </div>
+    <div id="bottom-wrapper">
       <div class="switch" style="position: absolute; left: 0px; top: 550px">
         <label>
           Off
@@ -40,9 +40,8 @@
           <span class="lever"></span>			  
           On
         </label>
-        <div id="status"></div>
-		<br><br>
-		<label>
+        <br><br>
+        <label>
           Off
           <input type="checkbox" onclick="checkAddress(this)" />
           <span class="lever"></span>			  
@@ -54,9 +53,8 @@
           <span class="lever"></span>			  
           On
         </label>
-        <div id="status"></div>
-		<br><br>
-		<label>
+        <br><br>
+        <label>
           Off
           <input type="checkbox" onclick="checkAddress(this)" />
           <span class="lever"></span>			  
@@ -68,9 +66,8 @@
           <span class="lever"></span>			  
           On
         </label>
-        <div id="status"></div>
-		<br><br>
-		<label>
+        <br><br>
+        <label>
           Off
           <input type="checkbox" onclick="checkAddress(this)" />
           <span class="lever"></span>			  
@@ -82,12 +79,10 @@
           <span class="lever"></span>			  
           On
         </label>
-        <div id="status"></div>
       </div>
+
+      <div id="plot-wrapper"></div>
     </div>
-    <div id="container" style="position: absolute; right: 0px; top: 550px; width: 1600px; height: 400px; margin: 0 auto">
-    </div>
-	<a class="btn-floating btn-large waves-effect waves-light red" style="position: absolute; right: 360px; top: 340px"><i class="material-icons">replay</i></a>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js"></script>
     <script src="js/three.js/loaders/ColladaLoader.js"></script>
     <script src="js/three.js/controls/TrackballControls.js"></script>
@@ -95,10 +90,11 @@
     <script src="js/underscore-min.js"></script>
     <script src="js/materialize.min.js"></script>
     <script src="http://code.highcharts.com/stock/highstock.js"></script>
+    <script src="js/jquery.canvasjs.min.js"></script>
     <script src="js/main.js"></script>
     <script src="js/comm.js"></script>
     <script src="js/drone.js"></script>
-    <script src="js/plot.js"></script>
+    <script src="js/plot2.js"></script>
     <script src="js/keyboard.js"></script>
     <script src="js/switches.js"></script>
     <script src="js/rangeslide.js"></script>

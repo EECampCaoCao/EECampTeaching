@@ -49,9 +49,9 @@ class Scene
 
 
   updateStatus: (status) ->
-    statusdiv = document.getElementById('status')
+    #statusdiv = document.getElementById('status')
     pos = new THREE.Vector3().fromArray(status.pos)
-    statusdiv.innerHTML = "(" + pos.x + ", " + pos.y + ", " + pos.z + ")"
+    #statusdiv.innerHTML = "(" + pos.x + ", " + pos.y + ", " + pos.z + ")"
     ori = new THREE.Matrix4()
     ori.set(
       status.ori[0], status.ori[1], status.ori[2], 0,
@@ -64,7 +64,9 @@ class Scene
     x = (new Date()).getTime() # current time
     if (window.lastx == undefined || window.lastx < x - 100) 
       y = theta._x
-      root.series.addPoint([x, y], true, false)
+      #flag = root.series.data.length > 100
+      #root.series.addPoint([x, y], true, flag)
+      window.updateChart(y)
       window.lastx = x
 
     @drone.position.copy(pos)

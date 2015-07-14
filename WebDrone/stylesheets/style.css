@@ -28,14 +28,19 @@ body {
   margin: 10px 0;
 }
 
-/* line 29, ../sass/style.sass */
+/* line 26, ../sass/style.sass */
+#canvas-wrapper {
+  position: relative;
+}
+
+/* line 30, ../sass/style.sass */
 #main-canvas {
   margin: 0 auto;
   /*margin-top: 20px */
   display: block;
 }
 
-/* line 34, ../sass/style.sass */
+/* line 35, ../sass/style.sass */
 #connect {
   position: fixed;
   top: 50;
@@ -43,12 +48,9 @@ body {
   z-index: 10;
 }
 
-/* line 40, ../sass/style.sass */
-#status {
-  position: fixed;
-  height: 50;
-  width: 200;
-  top: 50;
-  right: 50;
-  z-index: 10;
+/* line 41, ../sass/style.sass */
+#reset-btn {
+  position: absolute;
+  right: 40px;
+  bottom: 40px;
 }
