@@ -2,10 +2,10 @@
 VEL = 0.2
 camVel = new THREE.Vector3(0, 0, 0)
 @moveCamera = () ->
-  @camera.position.add camVel 
+  @camera.position.add camVel
 
 @render = () ->
-  @renderer.render(scene, camera)
+  window.renderer.render(scene, camera)
 
 @animate = () ->
   requestAnimationFrame(animate)
@@ -72,7 +72,7 @@ camVel = new THREE.Vector3(0, 0, 0)
   theta.setFromRotationMatrix(ori)
   x = (new Date()).getTime() # current time
   if (window.lastx == undefined || window.lastx < x - 80) 
-    y = theta._x
+    y = theta._z
     series.addPoint([x, y], true, false)
     window.lastx = x
 

@@ -167,7 +167,7 @@ class Controller(object):
         self._action[1] =  theta_x_action + -theta_z_action
         self._action[2] =  theta_y_action +  theta_z_action
         self._action[3] = -theta_x_action + -theta_z_action
-        self._thrust = self._thrust0 + thrust_action
+        self._thrust = self._thrust0 #+ thrust_action
         #self._thrust = 400
         #print(123)
         #print('thrust:', thrust_action)

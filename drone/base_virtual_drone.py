@@ -34,7 +34,7 @@ class BaseVirtualDrone(BaseDrone):
         self.acc_sensor = np.array([0, 0, self.g])
         self.motor = np.zeros(4)
 
-        q = 0.4
+        q = 0.8
         self.rot = np.array([[1, 0, 0],
                              [0, np.cos(q), -np.sin(q)],
                              [0, np.sin(q), np.cos(q)]])

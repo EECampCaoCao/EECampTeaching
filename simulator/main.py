@@ -6,6 +6,7 @@ import logging
 import webbrowser
 
 from .server import SimServer
+from simulator.HTTPserver import start_HTTPserver
 
 from os.path import abspath, dirname, join as pjoin
 
@@ -24,12 +25,10 @@ def run_server():
     loop = asyncio.get_event_loop()
     server = SimServer(loop=loop)
     start_server = websockets.serve(server, 'localhost', 3000)
-
+    start_HTTPserver()
     try:
         webbrowser.open(
-            "file://{}".format(
-                abspath(pjoin(dirname(abspath(__file__)), '..', 'WebDrone', 'index.html'))
-            )
+            "http://localhost:8000/WebDrone/index.html"
         )
         s = loop.run_until_complete(start_server)
         logger.info(

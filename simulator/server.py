@@ -24,8 +24,8 @@ class SimServer(object):
         except websockets.exceptions.InvalidState:
             logger.warning("EInvalidState")
             return "EInvalidState"
-        except Exception:
-            logger.warning("G__________G")
+        except Exception as e:
+            logger.error('{}'.format(e))
             yield from ws.close()
 
     @asyncio.coroutine
@@ -36,8 +36,7 @@ class SimServer(object):
             logger.warning("EInvalidState")
             return "EInvalidState"
         except Exception as e:
-            print(e)
-            logger.warning("G__________G")
+            logger.error('{}'.format(e))
             yield from ws.close()
         return mesg
 

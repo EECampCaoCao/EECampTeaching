@@ -29,7 +29,7 @@ class SimpleController(BaseController):
         self.target_omegaz = 0.
         self.target_zacc = 9.8
 
-        self.pid_thetaxy = np.array([48., 40., 15.])
+        self.pid_thetaxy = np.array([48., 20., 20.])
         self.pid_tweakper = np.array([1., 1., 1.])
 
         self.pids = {
@@ -84,7 +84,7 @@ class SimpleController(BaseController):
                             theta_x_action + -theta_z_action,
                             theta_y_action +  theta_z_action,
                            -theta_x_action + -theta_z_action,])
-        action += thrust_action
+        #action += thrust_action
 
         yield from self.send_control(action)
 
@@ -113,6 +113,9 @@ class SimpleController(BaseController):
         final_action = np.minimum.reduce(
             [final_action, np.full((4,), CONST['thrust_restriction'])]
         )
+        final_action[2] += 20
+        final_action[0] -= 20
+        print(final_action)
         yield from self.drone.set_motors(final_action)
 
 
