@@ -20,8 +20,22 @@
         <div id="canvas-wrapper"> 
         </div>
       </div>
-      <div id="status"></div>
-    </div>
+	<div class="switch">
+			<label>
+			  Off
+			  <input type="checkbox" onclick="checkAddress(this)" />
+			  <span class="lever"></span>			  
+			  On
+			</label><p>
+			<label>
+			  Off
+			  <input type="checkbox" onclick="checkAddress(this)" />
+			  <span class="lever"></span>			  
+			  On
+			</label><p>
+		<div id="status"></div>
+	</div>
+	</div>
     <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto">
     </div>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js"></script>
@@ -35,6 +49,7 @@
     <script src="js/main.js"></script>
     <script src="js/plot.js"></script>
     <script src="js/keyboard.js"></script>
+    <script src="js/switches.js"></script>
 
 	</body>
 </html>
