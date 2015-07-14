@@ -1,9 +1,14 @@
+window.App = {}
+root = window.App
 
 document.addEventListener "DOMContentLoaded", (event) ->
-  connect()
+
+  root.connect()
+  root.scene.start()
+
   $ '#start-btn'
     .click () ->
-      ws.send JSON.stringify
+      root.ws.send JSON.stringify
           action: 'start'
 
   

@@ -1,47 +1,47 @@
+root = window.App
+
 $ () ->
   $ document
     .ready () ->
 
       Highcharts.setOptions
-        global: 
+        global:
           useUTC: false
 
-      $ '#container' 
+      $ '#container'
         .highcharts 'StockChart',
-          chart: 
+          chart:
             marginRight: 10,
-            events: 
+            events:
               load:  () ->
-                window.series = this.series[0]
-                console.log 123
+                root.series = this.series[0]
           xAxis:
             type: 'datetime'
             tickPixelInterval: 150
             minRange: 10000
-          yAxis: 
-            title: 
+          yAxis:
+            title:
               text: 'Value'
             plotLines: [{
               value: 0
               width: 1
               color: '#808080'
             }]
-          tooltip: 
+          tooltip:
             formatter:  () ->
               return '<b>' + this.series.name + '</b><br/>' +
                 Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
                 Highcharts.numberFormat(this.y, 2)
-          legend: 
+          legend:
             enabled: false
-          exporting: 
+          exporting:
             enabled: false
           series: [{
             name: 'Random data',
-            data: []     
+            data: [0]
           }]
 
       return
 
   return
-  
 
