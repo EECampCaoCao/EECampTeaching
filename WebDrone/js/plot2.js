@@ -1,6 +1,6 @@
 window.onload = function () {
 
-		var dps = []; // dataPoints
+		var dps = [[], [], []]; // dataPoints
 
 		var chart = new CanvasJS.Chart("plot-wrapper",{
 			title :{
@@ -26,7 +26,7 @@ window.onload = function () {
 					y: y
 				});
         oops ++;
-
+			};
 			if (dps.length > dataLength)
 			{
 				dps.shift();				

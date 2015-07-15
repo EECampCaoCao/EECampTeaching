@@ -6,13 +6,14 @@
 
   root = window.App;
 
-  document.addEventListener("DOMContentLoaded", function(event) {
+  $(function(event) {
     root.connect();
     root.scene.start();
     $('#start-btn').click(function() {
-      return root.ws.send(JSON.stringify({
-        action: 'start'
-      }));
+      return root.ws.sendJSON({
+        action: 'start',
+        args: []
+      });
     });
     return $('#reset-btn').click(function() {
       return root.scene.controls.reset();

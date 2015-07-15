@@ -63,10 +63,9 @@ class Scene
     theta.setFromRotationMatrix(ori)
     x = (new Date()).getTime() # current time
     if (window.lastx == undefined || window.lastx < x - 100) 
-      y = theta._x
       #flag = root.series.data.length > 100
       #root.series.addPoint([x, y], true, flag)
-      window.updateChart(y)
+      root.updateChart [theta._x, theta._y, theta._z]
       window.lastx = x
 
     @drone.position.copy(pos)

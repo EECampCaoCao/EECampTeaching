@@ -60,12 +60,15 @@ class SimServer(object):
             if 'action' not in data:
                 logger.warning('No action in data')
                 return
-            self._preform_action(data['action'])
+            yield from self._preform_action(data['action'], data['args'])
             #yield from asyncio.sleep(0.02)
 
-    def _preform_action(self, action):
+    @asyncio.coroutine
+    def _preform_action(self, action, args):
         if action == 'start':
             self._loop.create_task(self._sim.run())
+        elif action == 'control':
+            yield from self._sim._controller.preform_action(action, args)
 
     @asyncio.coroutine
     def send_loop(self, ws):

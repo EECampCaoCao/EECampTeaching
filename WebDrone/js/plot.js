@@ -5,57 +5,49 @@
   root = window.App;
 
   $(function() {
-    $(document).ready(function() {
-      Highcharts.setOptions({
-        global: {
-          useUTC: false
+    var chart, dataLength, dps, updateInterval, xVal, yVal;
+    dps = [[], [], []];
+    chart = new CanvasJS.Chart("plot-wrapper", {
+      data: [
+        {
+          markerType: "none",
+          type: "line",
+          dataPoints: dps[0],
+          legendText: "Angle-x",
+          showInLegend: true
+        }, {
+          markerType: "none",
+          type: "line",
+          dataPoints: dps[1],
+          legendText: "Angle-y",
+          showInLegend: true
+        }, {
+          markerType: "none",
+          type: "line",
+          dataPoints: dps[2],
+          legendText: "Angle-z",
+          showInLegend: true
         }
-      });
-      $('#plot-wrapper').highcharts('StockChart', {
-        chart: {
-          marginRight: 10,
-          events: {
-            load: function() {
-              return root.series = this.series[0];
-            }
-          }
-        },
-        xAxis: {
-          type: 'datetime',
-          tickPixelInterval: 150,
-          minRange: 10000
-        },
-        yAxis: {
-          title: {
-            text: 'Value'
-          },
-          plotLines: [
-            {
-              value: 0,
-              width: 1,
-              color: '#808080'
-            }
-          ]
-        },
-        tooltip: {
-          formatter: function() {
-            return '<b>' + this.series.name + '</b><br/>' + Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' + Highcharts.numberFormat(this.y, 2);
-          }
-        },
-        legend: {
-          enabled: false
-        },
-        exporting: {
-          enabled: false
-        },
-        series: [
-          {
-            name: 'Random data',
-            data: [0]
-          }
-        ]
-      });
+      ],
+      axisX: {
+        valueFormatString: "ss.fff"
+      }
     });
+    xVal = 0;
+    yVal = 100;
+    updateInterval = 20;
+    dataLength = 500;
+    return root.updateChart = function(arr) {
+      var cur, i, _i;
+      cur = new Date();
+      for (i = _i = 0; _i <= 2; i = ++_i) {
+        dps[i].push({
+          x: cur,
+          y: arr[i]
+        });
+      }
+      return chart.render();
+    };
   });
 
 }).call(this);

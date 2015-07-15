@@ -12,16 +12,18 @@ body
   width: 20%
   background-color: #FFF
   display: flex
-  flex-flow: row wrap
-  justify-content: space-between
+  flex-flow: column
+  //justify-content: space-between
   align-content: flex-start
+  align-items: center
   padding-top: 10px
   padding-left: 30px
   padding-right: 30px
 
   .control-panel-button 
-    width: 150px
-    margin: 10px 0
+    width: 80%
+    margin-bottom: 20px
+    //margin: 10px 0
 
 #canvas-wrapper 
   position: relative
@@ -44,5 +46,15 @@ body
   bottom: 40px
 
 #bottom-wrapper
+  display: flex
+  flex-flow: row nowrap
+  height: 300px
+
+#switch-wrapper
+  width: 25%
+
+#plot-wrapper
+  width: 75%
+  height: 100%
 
   

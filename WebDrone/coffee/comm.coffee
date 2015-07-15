@@ -23,6 +23,9 @@ root.connect = () ->
   ws.onclose = () ->
     console.log "closed"
 
+  ws.sendJSON = (obj) ->
+    @send JSON.stringify obj
+
   root.ws = ws
 
 

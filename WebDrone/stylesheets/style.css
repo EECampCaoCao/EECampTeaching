@@ -15,32 +15,32 @@ body {
   width: 20%;
   background-color: #FFF;
   display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
+  flex-flow: column;
   align-content: flex-start;
+  align-items: center;
   padding-top: 10px;
   padding-left: 30px;
   padding-right: 30px;
 }
-/* line 22, ../sass/style.sass */
+/* line 23, ../sass/style.sass */
 #control-panel .control-panel-button {
-  width: 150px;
-  margin: 10px 0;
+  width: 80%;
+  margin-bottom: 20px;
 }
 
-/* line 26, ../sass/style.sass */
+/* line 28, ../sass/style.sass */
 #canvas-wrapper {
   position: relative;
 }
 
-/* line 30, ../sass/style.sass */
+/* line 32, ../sass/style.sass */
 #main-canvas {
   margin: 0 auto;
   /*margin-top: 20px */
   display: block;
 }
 
-/* line 35, ../sass/style.sass */
+/* line 37, ../sass/style.sass */
 #connect {
   position: fixed;
   top: 50;
@@ -48,9 +48,27 @@ body {
   z-index: 10;
 }
 
-/* line 41, ../sass/style.sass */
+/* line 43, ../sass/style.sass */
 #reset-btn {
   position: absolute;
   right: 40px;
   bottom: 40px;
+}
+
+/* line 48, ../sass/style.sass */
+#bottom-wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  height: 300px;
+}
+
+/* line 53, ../sass/style.sass */
+#switch-wrapper {
+  width: 25%;
+}
+
+/* line 56, ../sass/style.sass */
+#plot-wrapper {
+  width: 75%;
+  height: 100%;
 }

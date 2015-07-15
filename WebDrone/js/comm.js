@@ -33,6 +33,9 @@
     ws.onclose = function() {
       return console.log("closed");
     };
+    ws.sendJSON = function(obj) {
+      return this.send(JSON.stringify(obj));
+    };
     return root.ws = ws;
   };
 

@@ -115,7 +115,7 @@ class SimpleController(BaseController):
         )
         final_action[2] += 20
         final_action[0] -= 20
-        print(final_action)
+        #print(final_action)
         yield from self.drone.set_motors(final_action)
 
 
@@ -124,7 +124,6 @@ class SimpleController(BaseController):
         if action == 'stop':
             yield from self.stop()
         elif action == 'arm':
-            print('Get Arm')
             yield from self.arm()
         elif action == 'disarm':
             yield from self.disarm()
@@ -134,10 +133,11 @@ class SimpleController(BaseController):
             self.tweak_pid(*args)
     
     def preform_control(self, thrust, theta_x, theta_y, omega_z):
-        self.target_zacc = 9.8 + thrust
+        #self.target_zacc = 9.8 + thrust
         self.target_theta[0] = theta_x
         self.target_theta[1] = theta_y
-        self.target_omegaz = omega_z
+        #print(theta_x, theta_y)
+        #self.target_omegaz = omega_z
 
     def tweak_pid(self, type_, per):
         if type_ == 'P':
