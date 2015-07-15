@@ -5,10 +5,13 @@ class Scene
 
   init: () ->
     @scene = new THREE.Scene()
-    @camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000)
+
+    wrapper = $ '#canvas-wrapper'
+    [w, h] = [wrapper.width(), wrapper.height()]
+    @camera = new THREE.PerspectiveCamera(75, w/h, 0.1, 1000)
 
     @renderer = new THREE.WebGLRenderer({'antialias': false})
-    @renderer.setSize(window.innerWidth*0.6, window.innerHeight*0.6)
+    @renderer.setSize w, h
     @renderer.setClearColor(0xeeeeee)
 
     @drone = new THREE.Object3D()

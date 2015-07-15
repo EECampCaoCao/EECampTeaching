@@ -21,15 +21,20 @@ def cleanup(coros):
     for coro in coros:
         yield from coro
 
+@asyncio.coroutine
+def open_browser():
+    yield from asyncio.sleep(1.)
+    webbrowser.open(
+        "http://localhost:8000/WebDrone/index.html"
+    )
+
 def run_server():
     loop = asyncio.get_event_loop()
     server = SimServer(loop=loop)
     start_server = websockets.serve(server, 'localhost', 3000)
     start_HTTPserver()
+    loop.create_task(open_browser())
     try:
-        webbrowser.open(
-            "http://localhost:8000/WebDrone/index.html"
-        )
         s = loop.run_until_complete(start_server)
         logger.info(
             'simulation is serving on {}'.format(s.sockets[0].getsockname())

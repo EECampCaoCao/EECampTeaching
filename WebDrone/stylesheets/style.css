@@ -1,16 +1,32 @@
 /* line 3, ../sass/style.sass */
-body {
-  margin: 0;
+* {
+  box-sizing: border-box;
 }
 
 /* line 6, ../sass/style.sass */
-#main-wrapper {
-  display: flex;
-  flex-flow: row;
-  width: 100%;
+body {
+  margin: 0;
+  height: 100vh;
 }
 
-/* line 11, ../sass/style.sass */
+/* line 10, ../sass/style.sass */
+#main-wrapper {
+  margin: 0 auto;
+  padding-top: 20px;
+  width: 80%;
+  min-width: 600px;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* line 20, ../sass/style.sass */
+#top-wrapper {
+  display: flex;
+  flex-flow: row;
+  height: 70%;
+}
+
+/* line 25, ../sass/style.sass */
 #control-panel {
   width: 20%;
   background-color: #FFF;
@@ -19,28 +35,38 @@ body {
   align-content: flex-start;
   align-items: center;
   padding-top: 10px;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
-/* line 23, ../sass/style.sass */
+/* line 37, ../sass/style.sass */
 #control-panel .control-panel-button {
-  width: 80%;
+  width: 100%;
   margin-bottom: 20px;
 }
 
-/* line 28, ../sass/style.sass */
-#canvas-wrapper {
+/* line 42, ../sass/style.sass */
+#main-card {
   position: relative;
+  width: 75%;
+  height: 90%;
+  margin-right: 5%;
 }
 
-/* line 32, ../sass/style.sass */
+/* line 48, ../sass/style.sass */
+#canvas-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+/* line 54, ../sass/style.sass */
 #main-canvas {
   margin: 0 auto;
   /*margin-top: 20px */
   display: block;
 }
 
-/* line 37, ../sass/style.sass */
+/* line 59, ../sass/style.sass */
 #connect {
   position: fixed;
   top: 50;
@@ -48,27 +74,33 @@ body {
   z-index: 10;
 }
 
-/* line 43, ../sass/style.sass */
+/* line 65, ../sass/style.sass */
 #reset-btn {
   position: absolute;
   right: 40px;
   bottom: 40px;
 }
 
-/* line 48, ../sass/style.sass */
+/* line 70, ../sass/style.sass */
 #bottom-wrapper {
   display: flex;
   flex-flow: row nowrap;
-  height: 300px;
+  height: 30%;
 }
 
-/* line 53, ../sass/style.sass */
+/* line 75, ../sass/style.sass */
 #switch-wrapper {
-  width: 25%;
+  width: 20%;
 }
 
-/* line 56, ../sass/style.sass */
+/* line 78, ../sass/style.sass */
 #plot-wrapper {
   width: 75%;
+  margin-right: 5%;
   height: 100%;
+}
+
+/* line 83, ../sass/style.sass */
+#range-panel {
+  width: 100%;
 }

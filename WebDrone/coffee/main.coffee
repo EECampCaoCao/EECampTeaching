@@ -16,4 +16,15 @@ $ (event) ->
     .click () ->
       root.scene.controls.reset()
 
+  for c in ['P', 'I', 'D']
+    ((cc) ->
+      $ '#range-'+c
+        .change () ->
+          console.log cc, $(@).val()
+          root.ws.sendJSON
+            action: 'tweak'
+            args: [cc, parseFloat($(@).val())*0.01]
+          return 
+    )(c)
+
   

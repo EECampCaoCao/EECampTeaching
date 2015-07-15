@@ -8,42 +8,52 @@
   </head>
   <body>
     <div id="main-wrapper">
-      <div id="control-panel">
-        <button class="btn waves-effect waves-light control-panel-button"
-          id="start-btn"> Start </button>
-        <button class="btn waves-effect waves-light control-panel-button"> Stop </button>
-        <form action="#">
-          <p class="range-field">
-            <input type="range" name="rangeinput" min="0" max="100" onchange="updateTextInput(this.value)"/>
-            <input type="text" id="textInput" value="">
-          </p>
-        </form>
-      </div>
-      <div class="card-panel" style="position: relative">
-        <div id="canvas-wrapper"> 
+      <div id="top-wrapper">
+        <div class="card-panel" id="main-card">
+          <div id="canvas-wrapper"> 
+          </div>
+          <a class="btn-floating btn-large waves-effect waves-light red" 
+            id="reset-btn"><i class="material-icons">replay</i></a>
         </div>
-        <a class="btn-floating btn-large waves-effect waves-light red" 
-          id="reset-btn"><i class="material-icons">replay</i></a>
-      </div>
-    </div>
-    <div id="bottom-wrapper">
-      <div id="switch-wrapper">
-        <label>
-          Off
-          <input type="checkbox" onclick="checkAddress(this)" />
-          <span class="lever"></span>			  
-          On
-        </label>
-        <label>
-          Off
-          <input type="checkbox" onclick="checkAddress(this)" />
-          <span class="lever"></span>			  
-          On
-        </label>
-        <br><br>
-      </div>
 
-      <div id="plot-wrapper"></div>
+        <div id="control-panel">
+          <button class="btn waves-effect waves-light control-panel-button"
+            id="start-btn"> Start </button>
+          <button class="btn waves-effect waves-light control-panel-button"> Stop </button>
+          <div id="range-panel">
+            <p class="range-field">
+              <input type="range" id="range-P" min="0" max="200"/>
+            </p>
+            <p class="range-field">
+              <input type="range" id="range-I" min="0" max="200"/>
+            </p>
+            <p class="range-field">
+              <input type="range" id="range-D" min="0" max="200"/>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div id="bottom-wrapper">
+
+        <div id="plot-wrapper"></div>
+
+        <div id="switch-wrapper">
+          <label>
+            Off
+            <input type="checkbox" onclick="checkAddress(this)" />
+            <span class="lever"></span>			  
+            On
+          </label>
+          <label>
+            Off
+            <input type="checkbox" onclick="checkAddress(this)" />
+            <span class="lever"></span>			  
+            On
+          </label>
+          <br><br>
+        </div>
+
+      </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js"></script>
     <script src="js/three.js/loaders/ColladaLoader.js"></script>
@@ -59,7 +69,6 @@
     <script src="js/plot.js"></script>
     <script src="js/keyboard.js"></script>
     <script src="js/switches.js"></script>
-    <script src="js/rangeslide.js"></script>
 
   </body>
 </html>

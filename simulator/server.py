@@ -69,6 +69,8 @@ class SimServer(object):
             self._loop.create_task(self._sim.run())
         elif action == 'control':
             yield from self._sim._controller.preform_action(action, args)
+        elif action == 'tweak':
+            yield from self._sim._controller.preform_action(action, args)
 
     @asyncio.coroutine
     def send_loop(self, ws):
