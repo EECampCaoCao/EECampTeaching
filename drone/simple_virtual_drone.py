@@ -3,6 +3,11 @@ from drone import BaseVirtualDrone
 import numpy as np
 
 class SimpleVirtualDrone(BaseVirtualDrone):
+    def __init__(self, motion=False):
+        super().__init__()
+        self.motion_on = motion
+        self.motion_on = True
+        
     def diff_matrix(self, omega, dt):
         olen = np.linalg.norm(omega)
         if olen:
@@ -42,7 +47,7 @@ class SimpleVirtualDrone(BaseVirtualDrone):
         lifts = [self.lift(x) for x in pomega]
         force_int = self.force(lifts)
         torque_int = self.torque(lifts, pomega)
-        force_ref = self.M * self.gvec
+        force_ref = self.M * self.gvec + np.dot(rot, force_int)
         torque_ref = np.dot(rot, torque_int)
         I_ref = np.dot(np.dot(rot, self.I), self.rot.T)
         omega_ref = self.omega
@@ -56,8 +61,10 @@ class SimpleVirtualDrone(BaseVirtualDrone):
 
         dmx = self.diff_matrix(self.omega + rotacc_ref * dt / 2., dt)
         self.rot = np.dot(dmx, self.rot)
-        #self.pos += self.vel * dt + acc_ref * dt**2 / 2.
-        #self.vel += acc_ref * dt
+        if self.motion_on:
+            self.pos += self.vel * dt + acc_ref * dt**2 / 2.
+            self.vel += acc_ref * dt
+        #print(self.pos, self.vel)
         self.omega += rotacc_ref * dt
 
     @asyncio.coroutine

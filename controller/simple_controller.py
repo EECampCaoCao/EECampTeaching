@@ -5,7 +5,8 @@ import logging
 import json
 import numpy as np
 
-from mymath import PID, Momentum, ThetaOmegaKalmanFilter
+from mymath import (PID, Momentum, ThetaOmegaKalmanFilter,
+    PositionAccelerationKalmanFilter)
 from .constant import CONST
 
 from controller import BaseController
@@ -20,6 +21,7 @@ class SimpleController(BaseController):
         self.kf = []
         for i in range(3):
             self.kf.append(ThetaOmegaKalmanFilter(0.1, 0.1, 0.04))
+        self.kf.append(PositionAccelerationKalmanFilter(1, 0.1, 0.04))
         self.action = np.array([0., 0., 0., 0.])
         self.thrust = 0
 
@@ -29,14 +31,14 @@ class SimpleController(BaseController):
         self.target_omegaz = 0.
         self.target_zacc = 9.8
 
-        self.pid_thetaxy = np.array([48., 20., 20.])
+        self.pid_thetaxy = np.array([48., 30., 20.])
         self.pid_tweakper = np.array([1., 1., 1.])
 
         self.pids = {
             'theta_x': PID(*self.pid_thetaxy, imax=60.),
             'theta_y': PID(*self.pid_thetaxy, imax=60.),
             'theta_z': PID(60., 20., 30., imax=60.),
-            'acc_z': PID(20., 1., 0., imax=800),
+            'v_z': PID(60., 30., 20., imax=800),
         }
 
     @asyncio.coroutine
@@ -61,6 +63,9 @@ class SimpleController(BaseController):
         theta_smooth = np.array(theta_smooth)
         omega_smooth = np.array(omega_smooth)
 
+        self.kf[-1].update(now, np.array([z, acc[2]]))
+        z_pred = self.kf[-1].predict(now)
+
         zacc_smooth = self.accz_momentum.append_value(now, acc[2])
 
         theta_error = self.target_theta - theta_smooth
@@ -76,15 +81,17 @@ class SimpleController(BaseController):
             now, theta_error[2], 0 - omega_smooth[2]
         )
 
-        thrust_action = self.pids['acc_z'].get_control(
-            now, 0 - zacc_smooth
+        print(z_pred)
+
+        thrust_action = self.pids['v_z'].get_control(
+            now, 0 - z_pred[0], 0 - z_pred[1]
         )
 
         action = np.array([-theta_y_action +  theta_z_action,
                             theta_x_action + -theta_z_action,
                             theta_y_action +  theta_z_action,
                            -theta_x_action + -theta_z_action,])
-        #action += thrust_action
+        action += thrust_action
 
         yield from self.send_control(action)
 
@@ -133,7 +140,7 @@ class SimpleController(BaseController):
             self.tweak_pid(*args)
     
     def preform_control(self, thrust, theta_x, theta_y, omega_z):
-        #self.target_zacc = 9.8 + thrust
+        self.target_zacc = 9.8 + thrust
         self.target_theta[0] = theta_x
         self.target_theta[1] = theta_y
         #print(theta_x, theta_y)
