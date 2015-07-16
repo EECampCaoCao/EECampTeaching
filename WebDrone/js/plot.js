@@ -5,48 +5,99 @@
   root = window.App;
 
   $(function() {
-    var chart, dataLength, dps, updateInterval, xVal, yVal;
-    dps = [[], [], []];
-    chart = new CanvasJS.Chart("plot-wrapper", {
+    var angleChart, chartList, curChart, dataLength, dps, motorChart, updateInterval, xVal, yVal;
+    dps = [[], [], [], [], [], [], []];
+    angleChart = new CanvasJS.Chart("plot0", {
       data: [
         {
           markerType: "none",
           type: "line",
           dataPoints: dps[0],
-          legendText: "Angle-x",
+          legendText: "角度-x",
           showInLegend: true
         }, {
           markerType: "none",
           type: "line",
           dataPoints: dps[1],
-          legendText: "Angle-y",
+          legendText: "角度-y",
           showInLegend: true
         }, {
           markerType: "none",
           type: "line",
           dataPoints: dps[2],
-          legendText: "Angle-z",
+          legendText: "角度-z",
           showInLegend: true
         }
       ],
       axisX: {
         valueFormatString: "ss.fff"
+      },
+      legend: {
+        fontSize: 20,
+        verticalAlign: "top",
+        horizontalAlign: "right"
       }
     });
+    motorChart = new CanvasJS.Chart("plot1", {
+      data: [
+        {
+          markerType: "none",
+          type: "line",
+          dataPoints: dps[3],
+          legendText: "馬達-1",
+          showInLegend: true
+        }, {
+          markerType: "none",
+          type: "line",
+          dataPoints: dps[4],
+          legendText: "馬達-2",
+          showInLegend: true
+        }, {
+          markerType: "none",
+          type: "line",
+          dataPoints: dps[5],
+          legendText: "馬達-3",
+          showInLegend: true
+        }, {
+          markerType: "none",
+          type: "line",
+          dataPoints: dps[6],
+          legendText: "馬達-4",
+          showInLegend: true
+        }
+      ],
+      axisX: {
+        valueFormatString: "ss.fff"
+      },
+      legend: {
+        fontSize: 20,
+        verticalAlign: "top",
+        horizontalAlign: "right"
+      }
+    });
+    chartList = [angleChart, motorChart];
     xVal = 0;
     yVal = 100;
     updateInterval = 20;
     dataLength = 500;
-    return root.updateChart = function(arr) {
+    curChart = angleChart;
+    root.updateChart = function(t, arr) {
       var cur, i, j;
       cur = new Date();
-      for (i = j = 0; j <= 2; i = ++j) {
+      for (i = j = 0; j <= 6; i = ++j) {
         dps[i].push({
-          x: cur,
+          x: t,
           y: arr[i]
         });
       }
-      return chart.render();
+      return curChart.render();
+    };
+    return root.changeChart = function(type) {
+      type = parseInt(type);
+      curChart = chartList[type];
+      curChart.render();
+      $('.plot-wrapper').hide();
+      return $('#plot' + type).show();
     };
   });
 

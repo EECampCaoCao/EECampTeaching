@@ -7,7 +7,7 @@
   root = window.App;
 
   $(function(event) {
-    var c, i, len, ref, results;
+    var c, fn, i, len, ref;
     root.connect();
     root.scene.start();
     $('#start-btn').click(function() {
@@ -20,20 +20,26 @@
       return root.scene.controls.reset();
     });
     ref = ['P', 'I', 'D'];
-    results = [];
+    fn = function(cc) {
+      return $('#range-' + c).change(function() {
+        $(this).prev().text($(this).val() + '%');
+        root.ws.sendJSON({
+          action: 'tweak',
+          args: [cc, parseFloat($(this).val()) * 0.01]
+        });
+      });
+    };
     for (i = 0, len = ref.length; i < len; i++) {
       c = ref[i];
-      results.push((function(cc) {
-        return $('#range-' + c).change(function() {
-          console.log(cc, $(this).val());
-          root.ws.sendJSON({
-            action: 'tweak',
-            args: [cc, parseFloat($(this).val()) * 0.01]
-          });
-        });
-      })(c));
+      fn(c);
     }
-    return results;
+    return $('#switch-panel>li').click(function() {
+      var me;
+      me = $(this);
+      $(this).siblings().removeClass('active');
+      $(this).addClass('active');
+      return root.changeChart(me.attr('data'));
+    });
   });
 
 }).call(this);

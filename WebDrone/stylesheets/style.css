@@ -32,7 +32,7 @@ body {
   background-color: #FFF;
   display: flex;
   flex-flow: column;
-  align-content: flex-start;
+  justify-content: center;
   align-items: center;
   padding-top: 10px;
   padding-left: 10px;
@@ -90,17 +90,67 @@ body {
 
 /* line 75, ../sass/style.sass */
 #switch-wrapper {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
   width: 20%;
 }
 
-/* line 78, ../sass/style.sass */
-#plot-wrapper {
+/* line 82, ../sass/style.sass */
+.plot-wrapper {
   width: 75%;
   margin-right: 5%;
   height: 100%;
 }
 
-/* line 83, ../sass/style.sass */
+/* line 87, ../sass/style.sass */
 #range-panel {
+  width: 100%;
+}
+
+/* line 90, ../sass/style.sass */
+.range-field {
+  font-size: 16px;
+}
+/* line 93, ../sass/style.sass */
+.range-field > div:first-of-type {
+  display: inline-block;
+  width: 20px;
+}
+/* line 97, ../sass/style.sass */
+.range-field > div:nth-of-type(2) {
+  display: inline-block;
+  margin-left: 10px;
+  width: 80px;
+}
+
+/* line 102, ../sass/style.sass */
+#switch-panel {
+  margin-left: 10px;
+}
+/* line 104, ../sass/style.sass */
+#switch-panel li {
+  width: 300px;
+  padding-left: 25px;
+  cursor: pointer;
+}
+/* line 107, ../sass/style.sass */
+#switch-panel li.active {
+  background-color: #DDD;
+  padding-left: 23px;
+  border-left: 2px solid #EA4A4F;
+}
+/* line 111, ../sass/style.sass */
+#switch-panel li:hover {
+  padding-left: 24px;
+  border-left: 1px solid #EA4A4F;
+}
+/* line 115, ../sass/style.sass */
+#switch-panel a {
+  text-decoration: none;
+  color: #333;
+  line-height: 30px;
+  font-size: 18px;
   width: 100%;
 }

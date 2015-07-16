@@ -21,36 +21,32 @@
             id="start-btn"> Start </button>
           <button class="btn waves-effect waves-light control-panel-button"> Stop </button>
           <div id="range-panel">
-            <p class="range-field">
+            <div class="range-field">
+              <div>P</div> = <div>100%</div>
               <input type="range" id="range-P" min="0" max="200"/>
-            </p>
-            <p class="range-field">
+            </div>
+            <div class="range-field">
+              <div>I</div> = <div>100%</div>
               <input type="range" id="range-I" min="0" max="200"/>
-            </p>
-            <p class="range-field">
+            </div>
+            <div class="range-field">
+              <div>D</div> = <div>100%</div>
               <input type="range" id="range-D" min="0" max="200"/>
-            </p>
+            </div>
           </div>
         </div>
       </div>
       <div id="bottom-wrapper">
 
-        <div id="plot-wrapper"></div>
+        <div class="plot-wrapper" id="plot0"></div>
+        <div class="plot-wrapper" id="plot1" style="display: none"></div>
 
         <div id="switch-wrapper">
-          <label>
-            Off
-            <input type="checkbox" onclick="checkAddress(this)" />
-            <span class="lever"></span>			  
-            On
-          </label>
-          <label>
-            Off
-            <input type="checkbox" onclick="checkAddress(this)" />
-            <span class="lever"></span>			  
-            On
-          </label>
-          <br><br>
+          <ul id="switch-panel">
+            <li class="active" data="0"> <a> 角度 </a> </li>
+            <li data="1"> <a> 螺旋槳 </a> </li>
+            <!--<li> <a> 123 </a> </li>-->
+          </ul>
         </div>
 
       </div>

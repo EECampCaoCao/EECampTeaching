@@ -78,10 +78,10 @@ class SimServer(object):
         if not res:
             return
         while ws.open:
-            pos, ori = yield from self._sim.get_data()
-            data = json.dumps({'pos':pos, 'ori':ori})
+            pos, ori, motor = yield from self._sim.get_data()
+            data = json.dumps({'pos':pos, 'ori':ori, 'motor': motor})
             yield from self._send(ws, data)
-            yield from asyncio.sleep(0.02)
+            yield from asyncio.sleep(0.05)
 
     @asyncio.coroutine
     def close(self):

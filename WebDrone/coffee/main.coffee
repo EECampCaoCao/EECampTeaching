@@ -20,11 +20,18 @@ $ (event) ->
     ((cc) ->
       $ '#range-'+c
         .change () ->
-          console.log cc, $(@).val()
+          $(@).prev().text($(@).val() + '%')
           root.ws.sendJSON
             action: 'tweak'
             args: [cc, parseFloat($(@).val())*0.01]
           return 
     )(c)
+
+  $ '#switch-panel>li'
+    .click () ->
+      me = $(@)
+      $(@).siblings().removeClass('active')
+      $(@).addClass('active')
+      root.changeChart me.attr('data')
 
   

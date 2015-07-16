@@ -39,10 +39,11 @@ class Simulator(object):
     def get_data(self):
         pos = list(self._drone.pos)
         ori = list(self._drone.rot.flatten())
+        motor = list(self._drone.motor.flatten())
         # oori = ori[:, 2]
         # self._AOO.append(self._drone.acc_sensor[2])
         # self._AOO.append(oori)
-        return pos, ori
+        return pos, ori, motor
 
     @asyncio.coroutine
     def stop(self):

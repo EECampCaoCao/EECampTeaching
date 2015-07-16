@@ -58,16 +58,18 @@
     };
 
     Scene.prototype.updateStatus = function(status) {
-      var ori, pos, theta, x;
+      var motor, ori, pos, t, theta;
+      console.log(status);
       pos = new THREE.Vector3().fromArray(status.pos);
       ori = new THREE.Matrix4();
       ori.set(status.ori[0], status.ori[1], status.ori[2], 0, status.ori[3], status.ori[4], status.ori[5], 0, status.ori[6], status.ori[7], status.ori[8], 0, 0, 0, 0, 1);
-      theta = new THREE.Euler();
-      theta.setFromRotationMatrix(ori);
-      x = (new Date()).getTime();
-      if (window.lastx === void 0 || window.lastx < x - 100) {
-        root.updateChart([theta._x, theta._y, theta._z]);
-        window.lastx = x;
+      motor = status.motor;
+      t = new Date();
+      if (this.lastUpdateTime === void 0 || t.getTime() - this.lastUpdateTime > 50) {
+        theta = new THREE.Euler();
+        theta.setFromRotationMatrix(ori);
+        root.updateChart(t, [theta._x, theta._y, theta._z, motor[0], motor[1], motor[2], motor[3]]);
+        this.lastUpdateTime = t.getTime();
       }
       this.drone.position.copy(pos);
       return this.drone.rotation.setFromRotationMatrix(ori);

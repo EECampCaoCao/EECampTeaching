@@ -52,6 +52,7 @@ class Scene
 
 
   updateStatus: (status) ->
+    console.log(status)
     #statusdiv = document.getElementById('status')
     pos = new THREE.Vector3().fromArray(status.pos)
     #statusdiv.innerHTML = "(" + pos.x + ", " + pos.y + ", " + pos.z + ")"
@@ -62,14 +63,17 @@ class Scene
       status.ori[6], status.ori[7], status.ori[8], 0,
       0, 0, 0, 1
     )
-    theta = new THREE.Euler()
-    theta.setFromRotationMatrix(ori)
-    x = (new Date()).getTime() # current time
-    if (window.lastx == undefined || window.lastx < x - 100) 
+    motor = status.motor
+    t = (new Date()) # current time
+    if (@lastUpdateTime == undefined || 
+        t.getTime() - @lastUpdateTime > 50) 
       #flag = root.series.data.length > 100
       #root.series.addPoint([x, y], true, flag)
-      root.updateChart [theta._x, theta._y, theta._z]
-      window.lastx = x
+      theta = new THREE.Euler()
+      theta.setFromRotationMatrix(ori)
+      root.updateChart t, [theta._x, theta._y, theta._z, 
+                           motor[0], motor[1], motor[2], motor[3]]
+      @lastUpdateTime = t.getTime()
 
     @drone.position.copy(pos)
     @drone.rotation.setFromRotationMatrix(ori)
