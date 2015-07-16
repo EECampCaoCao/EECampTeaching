@@ -12,7 +12,7 @@
     }
 
     Scene.prototype.init = function() {
-      var axisHelper, container, h, radius, ref, w, wrapper;
+      var axisHelper, container, h, light1, light2, radius, ref, w, wrapper;
       this.scene = new THREE.Scene();
       wrapper = $('#canvas-wrapper');
       ref = [wrapper.width(), wrapper.height()], w = ref[0], h = ref[1];
@@ -36,6 +36,12 @@
       this.drone.add(axisHelper);
       axisHelper = new THREE.AxisHelper(4);
       this.scene.add(axisHelper);
+      light1 = new THREE.PointLight(0xffffff, 6, 200);
+      light1.position.set(0, 0, 100);
+      light2 = new THREE.PointLight(0xffffff, 3, 200);
+      light2.position.set(0, 0, -100);
+      this.scene.add(light1);
+      this.scene.add(light2);
       this.camera.position.y = -5;
       this.camera.position.z = 2;
       this.camera.up.set(0, 0.5, 1);

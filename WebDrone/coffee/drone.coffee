@@ -28,6 +28,13 @@ class Scene
     axisHelper = new THREE.AxisHelper(4)
     @scene.add(axisHelper)
 
+    light1 = new THREE.PointLight 0xffffff, 6, 200
+    light1.position.set 0, 0, 100
+    light2 = new THREE.PointLight 0xffffff, 3, 200
+    light2.position.set 0, 0, -100
+    @scene.add light1
+    @scene.add light2
+
     @camera.position.y = -5
     @camera.position.z = 2
     @camera.up.set(0, 0.5, 1)

@@ -66,6 +66,7 @@ class SimServer(object):
     @asyncio.coroutine
     def _preform_action(self, action, args):
         if action == 'start':
+            if self._sim.started.done(): return
             self._loop.create_task(self._sim.run())
         elif action == 'control':
             yield from self._sim._controller.preform_action(action, args)

@@ -5,7 +5,7 @@ import logging
 import json
 import numpy as np
 
-from mymath import (PID, Momentum, ThetaOmegaKalmanFilter,
+from mymath import (SimplePID as PID, Momentum, ThetaOmegaKalmanFilter,
     PositionAccelerationKalmanFilter)
 from .constant import CONST
 
@@ -80,8 +80,6 @@ class SimpleController(BaseController):
         theta_z_action = self.pids['theta_z'].get_control(
             now, theta_error[2], 0 - omega_smooth[2]
         )
-
-        print(z_pred)
 
         thrust_action = self.pids['v_z'].get_control(
             now, 0 - z_pred[0], 0 - z_pred[1]
