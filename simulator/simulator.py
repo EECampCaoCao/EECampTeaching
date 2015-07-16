@@ -9,6 +9,11 @@ from drone import (SimpleVirtualDrone,
         SimpleVirtualDroneWithNoise)
 
 from controller import SimpleController
+from simulator.HTTPserver import start_HTTPserver
+from simulator.server import SimulatorSocketServer
+
+import websockets
+import webbrowser
 
 logger = logging.getLogger()
 
@@ -19,19 +24,33 @@ class Simulator(object):
         self._drone = SimpleVirtualDroneWithNoise()
         #self._drone = SimpleVirtualDrone()
         self._controller = SimpleController(self._drone, log=True)
-        self._loop = asyncio.get_event_loop()
+        self.loop = asyncio.get_event_loop()
         #self._drone.set_init([0., 0., 0.], [0., 0., 1.])
         self.started = asyncio.Future()
         # self._AOO = []
         # self._drone.dt = 5e-4
         # self._drone.noise_z = 1e-10
 
+    def start(self):
+        s = self.start_server()
+        logger.info(
+            'simulation is serving on {}'.format(s.sockets[0].getsockname())
+        )
+        try:
+            self.loop.run_forever()
+        except KeyboardInterrupt:
+            logger.debug('capture ctrl-C in sim main.')
+            self.loop.run_until_complete(self.stop())
+        finally:
+            self.loop.close()
+            logger.info("exit.")
+
     @asyncio.coroutine
     def run(self):
         logger.info('starting simulation...')
         yield from self._controller.arm()
-        self._loop.call_soon_threadsafe(
-            self._loop.create_task,
+        self.loop.call_soon_threadsafe(
+            self.loop.create_task,
             self._controller.start()
         )
         self.started.set_result(True)
@@ -54,3 +73,20 @@ class Simulator(object):
         # logger.debug('plotting...')
         # plt.plot(self._AOO)
         # plt.show()
+
+    def start_server(self):
+        socket_server = SimulatorSocketServer(self)
+        start_socket_server = websockets.serve(socket_server,
+            'localhost', 3000)
+        start_HTTPserver()
+
+        @asyncio.coroutine
+        def open_browser():
+            yield from asyncio.sleep(1.)
+            webbrowser.open(
+                "http://localhost:8000/WebDrone/index.html"
+            )
+
+        self.loop.create_task(open_browser())
+        return self.loop.run_until_complete(start_socket_server)
+

@@ -3,7 +3,7 @@
 import logging
 import argparse
 
-from simulator import run_server as sim_server
+#from simulator import run_server as sim_server
 
 from logsetting import log_setup
 from importlib import import_module

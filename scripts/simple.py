@@ -1,4 +1,5 @@
-from simulator import run_server as sim_server
+from simulator import Simulator
 
 def main():
-    sim_server()
+    sim = Simulator()
+    sim.start()

@@ -30,7 +30,7 @@ def open_browser():
 
 def run_server():
     loop = asyncio.get_event_loop()
-    socket_server = SimServer(loop=loop)
+    socket_server = SimServer()
     start_socket_server = websockets.serve(socket_server,
         'localhost', 3000)
     start_HTTPserver()

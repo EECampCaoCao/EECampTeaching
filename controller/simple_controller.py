@@ -38,7 +38,7 @@ class SimpleController(BaseController):
             'theta_x': PID(*self.pid_thetaxy, imax=60.),
             'theta_y': PID(*self.pid_thetaxy, imax=60.),
             'theta_z': PID(60., 20., 30., imax=60.),
-            'v_z': PID(60., 30., 20., imax=800),
+            'z': PID(60., 30., 20., imax=800),
         }
 
     @asyncio.coroutine
@@ -81,7 +81,7 @@ class SimpleController(BaseController):
             now, theta_error[2], 0 - omega_smooth[2]
         )
 
-        thrust_action = self.pids['v_z'].get_control(
+        thrust_action = self.pids['z'].get_control(
             now, 0 - z_pred[0], 0 - z_pred[1]
         )
 
