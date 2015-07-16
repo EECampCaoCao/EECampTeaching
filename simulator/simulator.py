@@ -5,7 +5,8 @@ import logging
 # import matplotlib.pyplot as plt
 import numpy as np
 
-from drone import SimpleVirtualDrone
+from drone import (SimpleVirtualDrone,
+        SimpleVirtualDroneWithNoise)
 
 from controller import SimpleController
 
@@ -15,7 +16,8 @@ np.set_printoptions(precision=10, suppress=True)
 
 class Simulator(object):
     def __init__(self):
-        self._drone = SimpleVirtualDrone()
+        self._drone = SimpleVirtualDroneWithNoise()
+        #self._drone = SimpleVirtualDrone()
         self._controller = SimpleController(self._drone, log=True)
         self._loop = asyncio.get_event_loop()
         #self._drone.set_init([0., 0., 0.], [0., 0., 1.])

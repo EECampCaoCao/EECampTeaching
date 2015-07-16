@@ -30,12 +30,13 @@ def open_browser():
 
 def run_server():
     loop = asyncio.get_event_loop()
-    server = SimServer(loop=loop)
-    start_server = websockets.serve(server, 'localhost', 3000)
+    socket_server = SimServer(loop=loop)
+    start_socket_server = websockets.serve(socket_server,
+        'localhost', 3000)
     start_HTTPserver()
     loop.create_task(open_browser())
     try:
-        s = loop.run_until_complete(start_server)
+        s = loop.run_until_complete(start_socket_server)
         logger.info(
             'simulation is serving on {}'.format(s.sockets[0].getsockname())
         )

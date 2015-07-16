@@ -24,7 +24,9 @@ $ (event) ->
           root.ws.sendJSON
             action: 'tweak'
             args: [cc, parseFloat($(@).val())*0.01]
-          return 
+          return
+        .focus () ->
+          $(@).blur()
     )(c)
 
   $ '#switch-panel>li'
