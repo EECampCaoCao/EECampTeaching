@@ -33,7 +33,7 @@ class BaseController(object):
         try:
             yield from self.drone.start()
             logger.info('controller started.')
-            yield from self.run()
+            self.loop.create_task(self.run())
         except KeyboardInterrupt:
             logger.info('capture ctrl-C in controller.')
 

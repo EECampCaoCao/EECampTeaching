@@ -67,9 +67,9 @@ class SimulatorSocketServer(object):
             if self.sim.started.done(): return
             self.loop.create_task(self.sim.run())
         elif action == 'control':
-            yield from self.sim._controller.preform_action(action, args)
+            yield from self.sim.controller.preform_action(action, args)
         elif action == 'tweak':
-            yield from self.sim._controller.preform_action(action, args)
+            yield from self.sim.controller.preform_action(action, args)
 
     @asyncio.coroutine
     def send_loop(self, ws):

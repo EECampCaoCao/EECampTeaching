@@ -2,4 +2,5 @@
 
 from .base_controller import BaseController
 from .simple_controller import SimpleController
+from .concon_controller import ConConController
 
