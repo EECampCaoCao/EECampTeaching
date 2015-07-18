@@ -30,6 +30,7 @@ class SimulatorSocketServer(object):
     def _recv(self, ws):
         try:
             mesg = yield from ws.recv()
+            print(mesg)
         except websockets.exceptions.InvalidState:
             logger.warning("EInvalidState")
             return "EInvalidState"

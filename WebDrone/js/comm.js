@@ -4,7 +4,7 @@
 
   root = window.App;
 
-  root.wsuri = "ws://localhost:3000/ws/";
+  root.wsuri = "ws://140.112.18.226:3000/ws/";
 
   root.ws = null;
 

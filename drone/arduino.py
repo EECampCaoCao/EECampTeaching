@@ -260,6 +260,9 @@ class Arduino(object):
         return self.state != 'FAILED' and self.state != 'CLOSED'
 
     def close(self):
+        self._loop.run_until_complete(
+            self.write_motors([-20, -20, -20, -20])
+        )
         if self.state != 'CLOSED':
             self._ser.flush()
             self._ser.close()

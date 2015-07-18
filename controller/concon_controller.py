@@ -19,7 +19,7 @@ class ConConController(SimpleController):
         if action is not None: self.action = action
         if thrust is not None: self.thrust = thrust
 
-        final_action = np.zeros(4)
+        final_action = np.full(4., 20.)
         yield from self.drone.set_motors(final_action)
 
 

@@ -85,6 +85,7 @@ class RealDrone(BaseDrone):
     def set_motors(self,motorcmd):
         self.motor = motorcmd
         motorcmd = list(map(int, np.minimum(motorcmd+1200, 1400)))
+        motorcmd[1] = motorcmd[3] = 0
         yield from self.arduino.write_motors(motorcmd)
 
     def getacc(self):
@@ -95,7 +96,8 @@ class RealDrone(BaseDrone):
         return self.data['gyro'] - self.omega0
 
     def getz(self):
-        return (self.p0 - self.data['pressure']) * 0.083
+        return 0.
+        # return (self.p0 - self.data['pressure']) * 0.083
 
     def gettheta(self):
         acc = self.getacc() 
