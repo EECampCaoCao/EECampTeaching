@@ -5,7 +5,7 @@ import logging
 import json
 import numpy as np
 
-from mymath import (SimplePID as PID, Momentum, ThetaOmegaKalmanFilter,
+from mymath import (PID as PID, Momentum, ThetaOmegaKalmanFilter,
     PositionAccelerationKalmanFilter)
 from .constant import CONST
 

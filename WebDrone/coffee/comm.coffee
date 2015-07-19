@@ -1,6 +1,9 @@
 root = window.App
 
-root.wsuri = "ws://localhost:3000/ws/"
+regex = /http[s]?:\/\/([^/:]*):/
+url = regex.exec(document.URL)[1]
+
+root.wsuri = "ws://" + url +  ":3000/ws/"
 root.ws = null
 
 root.connect = () ->

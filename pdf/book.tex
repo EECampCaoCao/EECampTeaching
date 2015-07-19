@@ -3,7 +3,8 @@
 \usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
 \usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
 \usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
-\usepackage{color, unicode-math, float, hhline}
+\usepackage{pdftexcmds}
+\usepackage{color, unicode-math, float, hhline, listings, minted}
 
 \usepackage[CheckSingle, CJKmath]{xeCJK}
 \usepackage{CJKulem}
@@ -12,7 +13,7 @@
 \usepackage{circuitikz}
 %\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
 %\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
-%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setmonofont{Source Code Pro}
 \setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
 
 \def\normalsize{\fontsize{12}{18}\selectfont}
@@ -24,7 +25,6 @@
 %\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
 %\titleformat{\subsection}{\large}{\arabic{subsection}.}{12pt}{}
 %\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
-
 \parindent=24pt
 
 \DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
@@ -37,6 +37,12 @@
 \newcommand{\ex}{\mathsf{e}}
 \newcommand{\dD}{\mathrm{d}}
 \newcommand{\dI}{\,\mathrm{d}}
+
+\newlength{\mymathln}
+\newcommand{\aligninside}[2]{
+  \settowidth{\mymathln}{#2}
+  \mathmakebox[\mymathln]{#1}
+}
 
 \setitemize{itemsep=0pt}
 \setenumerate{itemsep=0pt}
@@ -107,23 +113,171 @@ $K_i$ 太大也會使得系統不穩定。
 \subsection{微分項(D)}
 微分項可以有效的使系統穩定，但容易受感應器的誤差所影響。
 
+\subsection{離散PID}
+因為我們運算、感應器偵測都是需要時間的，通常PID只能每 $T$ 單位的時間
+才計算一次。 在這個情況下，
+\[ y[n] = K_p e[n] + K_i \sum_0^{n} e[i] \Delta t_i+ K_d \frac{e[n] - e[n-1]}{\Delta t} \]
+
 \section{實作細節}
 \subsection{PID}
-你必須實作 \texttt{controller/pid.py} 中的 \texttt{class PID} 。 
-其中必須包含函數 \\
-\texttt{get\_control(self, t, err)} \\
-輸入：
+你必須實作 \texttt{mymath/pypid.py} 中的 \texttt{class MyPID} 。 
+其中有兩個函數需要你修改 
 \begin{itemize}
-  \item \texttt{t}: 當前的時間。
-  \item \texttt{err}: 當前的誤差。
+  \item \mintinline{python}{__init__(self, kp, ki, kd, *, imax)}:
+    這個函數是用來初始化 PID 用的。 你可以在裡面宣告一些之後要
+    用的變數。
+
+  \item \mintinline{python}{get_control(self, t, err, derr)}:
+    這個函數是主要的函數。 給定當前的時間 (\texttt{t}) 、 誤差
+    (\texttt{err}) 以及誤要的微分 (\texttt{derr}) ， 你必需回
+    傳反應的大小。
 \end{itemize}
-輸出： \\
-一個浮點數 \texttt{y} 表示反應的大小。
 
 \subsection{模擬器使用方法}
-\texttt{python3 main.py -m sim} 來執行模擬器。
- 
-%\section{
+請在終端機下輸入 \mintinline{bash}{python3 main.py -s simple} 來執行模擬器。
+在自動開起的瀏覽器按下 Start 鍵之後模擬器應該就會開始運行了。
+
+\subsubsection{\texttt{\_\_init\_\_}}
+\begin{minted}[linenos, frame=lines, framesep=2mm]{python3}
+def __init__(self, kp, ki, kd, *, imax):
+    super().__init__(kp, ki, kd, imax=imax)
+    self.last_time = None
+    # TODO:
+    # Init the variables you need...
+\end{minted}
+這裡主要是放一些初始化需要做的事情。
+\begin{itemize}
+  \itemsep=0pt
+  \item 第2行： 初始化這個物件所繼承的母物件。詳細的細節可以
+    不用理會， 但要注意以下這些變數可用。
+    \begin{itemize}
+      \item \mintinline{python}{self.kp} : 即 $K_p$ 的值。
+      \item \mintinline{python}{self.ki} : 即 $K_i$ 的值。
+      \item \mintinline{python}{self.kd} : 即 $K_d$ 的值。
+    \end{itemize}
+  \item 第3..5行：
+    這邊需要你初始化一些之後你所需要的變數。 請注意
+    變數可能需要在 \mintinline{python}{self} 下定義，
+    否則當這個函數結束後變數就會消失了。
+    也就是說你的變數應該會長的像 \mintinline{python}{self.a}
+    等等。 在這邊做為範例我們幫你初始化了一個變數
+    \mintinline{python}{self.last_time} 為 
+    \mintinline{python}{None} 了。
+    至於要初始化哪些變數，可以接下來需要的時後再決定！
+\end{itemize}
+\subsubsection{\texttt{get\_control(self, t, err, derr)}}
+\begin{minted}[linenos, frame=lines, framesep=2mm]{python3}
+def get_control(self, t, err, derr):
+    if self.last_time is None:
+        self.last_time = t
+        return 0.
+
+    # TODO:
+    # What should up be ?
+    up = 0. 
+
+    # TODO:
+    # What should ud be ?
+    ud = 0.
+
+    # TODO:
+    # Calculate dt. Remember to update
+    # some variables you defined
+    dt = 0.
+    self.last_time = t
+
+    # TODO:
+    # Calculate the sum of the error.
+    something = 0.
+
+    # TODO:
+    # Restrict the sum of the error to be within
+    # [-self.int_restriction, self.int_restriction]
+    if something > self.int_restriction:
+        pass
+
+    # TODO:
+    # What should ui be ?
+    ui = 0.
+
+    # TODO:
+    # Return the sum of up, ud and ui !
+    return 0.
+\end{minted}
+程式碼雖然看起來很長，但其實不會很複雜！ 我們一行一行來看！
+\begin{itemize}
+  \itemsep=0pt
+  \item 第1行： 這個函數的參數。 第一個 \mintinline{python}{self} 
+    顧名思意就是代表自己！ \texttt{t}, \texttt{err}, \texttt{derr}
+    則分別代表當前的時間、誤差以及微分向的誤差。 也就是
+    \begin{align*}
+      \texttt{t} &= t[n] \\
+      \texttt{err} &= e[n] \\
+      \texttt{derr} &\approx \frac{e[n] - e[n-1]}{t[n] - t[n-1]} \\
+    \end{align*}
+    至於為什麼 \texttt{derr} 明明可以用 \texttt{t}, \texttt{err} 得出卻
+    還要傳一個近似的值進來呢？ 其實是因為直接計算的話容易因為感測器誤差
+    而出現不可遇期的結果，因此我們會用其他方法(Kalman Filter)幫你算好了。
+
+  \item 第2..4行： 如果這是第一次執行 ($n = 0$) 我們直接回傳 $0$。
+    這個部分全部幫你寫好了，不需要去動他。
+
+  \item 第6..8行：
+    還記得 PID 的公式嗎？ 忘記了也沒關係！ 我們再複習一次
+    \begin{alignat*}{5}
+      & y[n] &&= \;&&K_p e[n] &&+ K_i \sum_0^{n} e[i] \Delta t_i&&+ K_d \frac{e[n] - e[n-1]}{\Delta t} &&\\
+      &    &&= \;&&u_p        &&+ u_i                         &&+ u_d &&\\
+    \end{alignat*}
+    其中 $\Delta t = t[n] - t[n-1]$ ， 而 $u_p, u_i, u_d$ 分別是 P, I, D 項的反應。
+    現在做為暖身請你修改第 $8$ 行的值，算出 $u_p$ (也就是 \texttt{up})。
+    注意到 $e[n] = \texttt{err}$ ， 且 $K_p$ 已經定義在 \mintinline{python}{self.kp} 了。
+
+  \item 第10..12行：
+    與剛剛類似，請修改第 $12$ 行的值，算出 $u_d$ (也就是 \texttt{ud})。
+
+  \item 第14..18行：
+    最後我們要開始算積分項。 首先我們要算出 $\Delta t$ (\texttt{dt})。
+    請由 $\Delta t$ 的定義下手！ 注意到 $t[n-1]$ 被存在 \mintinline{python}{self.last_time}
+    裡了！\\
+    算完了不要忘記更新 \mintinline{python}{self.last_time} 的值讓下一次計算可以使用！
+
+  \item 第20..22行：
+    計算積分的累計！ 也就是要計算
+    \[ I = \sum_0^n e[i] \Delta t_i \approx \sum_1^n e[i] \cdot (t[i] - t[i-1]) \]
+    咦？ 怎麼下標變成從 $1$ 開始了？ 其實是因為 $n = 1$ 時 $t[i-1] = t[-1]$ 
+    沒有定義。 這也是為什麼我們在 2..4 行要直接跳出的原因！
+
+    至於要如何記算呢？ 其實就是把 $e[n] \cdot \Delta t_n$ 一直累加而已。
+    但是要累加在哪一個變數呢？ 我們似乎還沒定義這樣的一個變數呢！ \\
+    嘿嘿！ 這時候就要請你在 {\bf 初始化}的時候就定義好囉！
+
+  \item 第24..28行：
+    上一步我們計算出了 $I = \sum e[i] \Delta t_i$ ， 但在實際中我們必須
+    給這個數字一個閥值！ 否則 $I$ 如果可以無限累積，最後一定會超出馬達可
+    以容許的範圍！ 
+
+    在這裡我們會給他一個上限 $I_R$ ，也就是我們必須規定 $\abs{I} \leq I_R$ ，
+    或是說 $-I_R \leq I \leq I_R$ 。 因此我們要做的事情就是
+    \begin{itemize}
+      \item Case 1: $-I_R \leq I \leq I_R$ 
+            這個情況 $I$ 沒有超過範圍，所以我們不用動他。
+      \item Case 2: $I \geq I_R$ 
+            這個情況 $I$ 超過右界，所以我們把他拉回來，也就是令 $I = I_R$。
+      \item Case 3: $I \leq -I_R$ 
+            這個情況 $I$ 超過左界，所以同樣的我們令 $I = -I_R$。
+    \end{itemize}
+
+  \item 第30..32行：
+    最後計算出 $u_i$ ，其實就是乘一個係數而已！
+
+  \item 第30..32行：
+    最後的最後別忘了把答案傳回去！
+    否則就像考試忘了把答案填在答案卡上一樣！
+  
+\end{itemize}
+\subsection{ 測試 }
+如果你已經完成了以上程式，打開模擬器，理論上四軸飛行器應該可以保持平衡了！
+
 
 \end{document}
 
