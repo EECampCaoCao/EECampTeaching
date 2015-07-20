@@ -13,14 +13,14 @@
   root.ws = null;
 
   root.connect = function() {
-    var err, ws;
-    try {
-      ws = new WebSocket(root.wsuri);
-    } catch (_error) {
-      err = _error;
-      console.log("can't connect to", root.wsuri);
-      console.log("error message:", err.message);
-    }
+    var options, ws;
+    options = {
+      automaticOpen: false,
+      reconnectInterval: 500,
+      maxReconnectInterval: 5000,
+      reconnectDecay: 1.0
+    };
+    ws = new ReconnectingWebSocket(root.wsuri, null, options);
     ws.onopen = function() {
       return console.log("connected to", root.wsurl);
     };
@@ -33,6 +33,9 @@
         return root.scene.updateStatus(data);
       };
       return reader.readAsText(evt.data);
+    };
+    ws.onerror = function(e) {
+      return console.log(e);
     };
     ws.onclose = function() {
       return console.log("closed");

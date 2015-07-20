@@ -65,7 +65,6 @@
 
     Scene.prototype.updateStatus = function(status) {
       var motor, ori, pos, t, theta;
-      console.log(status);
       pos = new THREE.Vector3().fromArray(status.pos);
       ori = new THREE.Matrix4();
       ori.set(status.ori[0], status.ori[1], status.ori[2], 0, status.ori[3], status.ori[4], status.ori[5], 0, status.ori[6], status.ori[7], status.ori[8], 0, 0, 0, 0, 1);

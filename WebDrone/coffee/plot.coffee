@@ -85,5 +85,9 @@ $ () ->
       curChart.render()
       $('.plot-wrapper').hide()
       $('#plot' + type).show()
+
+    root.clearChart = () ->
+      for x in dps
+        x.length = 0
       
 

@@ -25,11 +25,13 @@ $ () ->
 
   document.addEventListener 'keydown', (event) ->
     k = event.keyCode
+    return if k not of keyMap
     return if keyFlag[k]
     keyFlag[k] = true
     root.sendControl()
 
   document.addEventListener 'keyup', (event) ->
     k = event.keyCode
+    return if k not of keyMap
     keyFlag[k] = false
     root.sendControl()

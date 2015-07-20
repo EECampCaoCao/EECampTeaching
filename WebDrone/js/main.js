@@ -6,15 +6,34 @@
 
   root = window.App;
 
+  $(window).on('beforeunload', function() {
+    return root.ws.close();
+  });
+
   $(function(event) {
     var c, fn, i, len, ref;
     root.connect();
     root.scene.start();
+    $('#ss-btn').click(function() {
+      console.log(456);
+      $.post('/', {
+        action: 'start'
+      });
+      return root.ws.open();
+    });
     $('#start-btn').click(function() {
-      return root.ws.sendJSON({
+      root.ws.sendJSON({
         action: 'start',
         args: []
       });
+      return root.clearChart();
+    });
+    $('#stop-btn').click(function() {
+      console.log(123);
+      $.post('/', {
+        action: 'stop'
+      });
+      return root.ws.close();
     });
     $('#reset-btn').click(function() {
       return root.scene.controls.reset();

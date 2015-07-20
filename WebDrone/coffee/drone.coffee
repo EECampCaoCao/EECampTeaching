@@ -59,7 +59,6 @@ class Scene
 
 
   updateStatus: (status) ->
-    console.log(status)
     #statusdiv = document.getElementById('status')
     pos = new THREE.Vector3().fromArray(status.pos)
     #statusdiv.innerHTML = "(" + pos.x + ", " + pos.y + ", " + pos.z + ")"

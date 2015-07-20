@@ -92,12 +92,21 @@
       }
       return curChart.render();
     };
-    return root.changeChart = function(type) {
+    root.changeChart = function(type) {
       type = parseInt(type);
       curChart = chartList[type];
       curChart.render();
       $('.plot-wrapper').hide();
       return $('#plot' + type).show();
+    };
+    return root.clearChart = function() {
+      var j, len, results, x;
+      results = [];
+      for (j = 0, len = dps.length; j < len; j++) {
+        x = dps[j];
+        results.push(x.length = 0);
+      }
+      return results;
     };
   });
 

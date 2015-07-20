@@ -33,6 +33,9 @@
     document.addEventListener('keydown', function(event) {
       var k;
       k = event.keyCode;
+      if (!(k in keyMap)) {
+        return;
+      }
       if (keyFlag[k]) {
         return;
       }
@@ -42,6 +45,9 @@
     return document.addEventListener('keyup', function(event) {
       var k;
       k = event.keyCode;
+      if (!(k in keyMap)) {
+        return;
+      }
       keyFlag[k] = false;
       return root.sendControl();
     });
