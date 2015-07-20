@@ -30,6 +30,12 @@ $ (event) ->
         action: 'stop'
       root.ws.close()
 
+  $ '#code-btn'
+    .click () ->
+      $ '#code-wrapper'
+        .show 200, () ->
+          $ '#code-area textarea'
+            .focus()
 
   $ '#reset-btn'
     .click () ->
@@ -55,4 +61,25 @@ $ (event) ->
       $(@).addClass('active')
       root.changeChart me.attr('data')
 
+  editor = ace.edit 'code-area'
+  editor.setTheme "ace/theme/tomorrow_night_bright"
+  editor.getSession().setMode "ace/mode/python"
+  root.editor = editor
+
+  $.get '/mypid.py', (data) ->
+    console.log data
+    root.editor.setValue data
+
+
+  $ '#return-btn'
+    .click () ->
+      console.log 123
+      $ '#code-wrapper'
+        .hide 200
+
+  $ '#run-btn'
+    .click () ->
+      $.post '/runCode',
+        code: root.editor.getValue()
+      root.ws.open()
   

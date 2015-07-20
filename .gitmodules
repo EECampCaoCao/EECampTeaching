@@ -1,0 +1,3 @@
+[submodule "WebDrone/js/ace-builds"]
+	path = WebDrone/js/ace-builds
+	url = https://github.com/ajaxorg/ace-builds

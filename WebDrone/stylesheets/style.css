@@ -158,4 +158,35 @@ body {
 /* line 123, ../sass/style.sass */
 #code-wrapper {
   position: absolute;
+  left: 20%;
+  right: 20%;
+  top: 10%;
+  bottom: 10%;
+  z-index: 100;
+}
+
+/* line 131, ../sass/style.sass */
+#code-card {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+}
+
+/* line 137, ../sass/style.sass */
+#code-area {
+  height: 100%;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+/* line 142, ../sass/style.sass */
+#code-button-area {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+}
+/* line 147, ../sass/style.sass */
+#code-button-area button {
+  margin-left: 20px;
 }

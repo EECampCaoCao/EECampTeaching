@@ -11,7 +11,7 @@
   });
 
   $(function(event) {
-    var c, fn, i, len, ref;
+    var c, editor, fn, i, len, ref;
     root.connect();
     root.scene.start();
     $('#ss-btn').click(function() {
@@ -35,6 +35,11 @@
       });
       return root.ws.close();
     });
+    $('#code-btn').click(function() {
+      return $('#code-wrapper').show(200, function() {
+        return $('#code-area textarea').focus();
+      });
+    });
     $('#reset-btn').click(function() {
       return root.scene.controls.reset();
     });
@@ -54,12 +59,30 @@
       c = ref[i];
       fn(c);
     }
-    return $('#switch-panel>li').click(function() {
+    $('#switch-panel>li').click(function() {
       var me;
       me = $(this);
       $(this).siblings().removeClass('active');
       $(this).addClass('active');
       return root.changeChart(me.attr('data'));
+    });
+    editor = ace.edit('code-area');
+    editor.setTheme("ace/theme/tomorrow_night_bright");
+    editor.getSession().setMode("ace/mode/python");
+    root.editor = editor;
+    $.get('/mypid.py', function(data) {
+      console.log(data);
+      return root.editor.setValue(data);
+    });
+    $('#return-btn').click(function() {
+      console.log(123);
+      return $('#code-wrapper').hide(200);
+    });
+    return $('#run-btn').click(function() {
+      $.post('/runCode', {
+        code: root.editor.getValue()
+      });
+      return root.ws.open();
     });
   });
 
