@@ -17,13 +17,14 @@ app.use bodyParser.urlencoded(
 
 app.post '/', (req, res) ->
   console.log req.body
-  options = 
+  options =
+    pythonPath: 'python3'
     scriptPath: '.'
     args: ['-s', 'simple']
 
   if 'action' not of req.body
     res.sendStatus 404
-    return 
+    return
 
   if req.body.action == 'start'
     return if pythonStarted
@@ -54,7 +55,8 @@ app.post '/runCode', (req, res) ->
   #console.log req.body.code
   fs.writeFile (__dirname+'/mymath/mypid.py'), req.body.code, (err) ->
     return console.log(err) if err
-    options = 
+    options =
+      pythonPath: 'python3'
       scriptPath: '.'
       args: ['-s', 'simple']
     console.log 'Python starting'
