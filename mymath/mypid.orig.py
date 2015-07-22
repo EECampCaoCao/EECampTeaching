@@ -4,9 +4,9 @@ import numpy as np
 class MyPID(BasePID):
     def __init__(self, kp, ki, kd, *, imax):
         super().__init__(kp, ki, kd, imax=imax)
-        self.last_time = None
         # TODO:
         # Init the variables you need...
+        self.last_time = None
 
     def get_control(self, t, err, derr):
         if self.last_time is None:

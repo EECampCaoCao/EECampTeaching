@@ -11,6 +11,7 @@
 \usepackage{enumitem}
 \usepackage{tikz}
 \usepackage{circuitikz}
+\usepackage{menukeys}
 %\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
 %\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
 \setmonofont{Source Code Pro}
@@ -119,7 +120,7 @@ $K_i$ 太大也會使得系統不穩定。
 \[ y[n] = K_p e[n] + K_i \sum_0^{n} e[i] \Delta t_i+ K_d \frac{e[n] - e[n-1]}{\Delta t} \]
 
 \section{實作細節}
-\subsection{PID}
+\subsection{概覽}
 你必須實作 \texttt{mymath/mypid.py} 中的 \texttt{class MyPID} 。 
 其中有兩個函數需要你修改 
 \begin{itemize}
@@ -134,11 +135,36 @@ $K_i$ 太大也會使得系統不穩定。
 \end{itemize}
 
 \subsection{模擬器使用方法}
-請在終端機下輸入 \mintinline{bash}{python3 main.py -s simple} 來執行模擬器。
-在自動開起的瀏覽器按下 Start 鍵之後模擬器應該就會開始運行了。
+請在瀏覽器網址列輸入 \texttt{http://localhost:8080} 來執行模擬器。
+如果瀏覽器找不到網頁，請在終端機輸入 \mintinline{bash}{coffee server.coffee -n} 後
+再開啟瀏覽器。
 
-\subsubsection{\texttt{\_\_init\_\_}}
+\subsection{提示}
+請跟著提示一步一步完成這份程式碼！\\
+如果你遇到困難，不要害怕，趕緊問問身旁的人吧！\\
+而如果你覺得太簡單了，也請你不要吝惜教教身旁的人吧！
+\subsubsection{\texttt{import}s and \texttt{class}}
 \begin{minted}[linenos, frame=lines, framesep=2mm]{python3}
+from mymath.pid import BasePID
+import numpy as np
+
+class MyPID(BasePID):
+\end{minted}
+\begin{itemize}
+  \itemsep=0pt
+  \item 第1-2行： 引入一些模組。\mintinline{python}{BasePID} 是你的 
+    \mintinline{python}{PID} 要繼承的母物件。 而 \mintinline{python}{numpy}
+    …是一個很猛的科學計算模組，只是因為一些歷史因素我們沒有把他刪掉。
+    你應該不會需要用到他。
+  \item 第4行：
+    這裡定義了我們的物件 \mintinline{python}{MyPID} ，他繼承了 
+    \mintinline{python}{BasePID} 這個母物件。 至於什麼是繼承呢？
+    基本上你會擁有 \mintinline{python}{BasePID} 的所有東西，你還可以
+    在他之上修改原有的一些東西。 細節應該不太重要！
+
+\end{itemize}
+\subsubsection{\texttt{\_\_init\_\_}}
+\begin{minted}[linenos, frame=lines, framesep=2mm, firstnumber=last]{python3}
 def __init__(self, kp, ki, kd, *, imax):
     super().__init__(kp, ki, kd, imax=imax)
     self.last_time = None
@@ -148,25 +174,31 @@ def __init__(self, kp, ki, kd, *, imax):
 這裡主要是放一些初始化需要做的事情。
 \begin{itemize}
   \itemsep=0pt
-  \item 第2行： 初始化這個物件所繼承的母物件。詳細的細節可以
-    不用理會， 但要注意以下這些變數可用。
+  \item 第5行： 定義我們的 \mintinline{python}{__init__} 函數。
+    為什麼要取那麼怪的名子呢？ 其實這是 \texttt{python} 定義的，
+    所有 \texttt{python} 物件的建構函數都要是這個名子！
+  \item 第6行： 初始化這個物件所繼承的母物件。詳細的細節可以
+    不用理會， 但要注意執行了這行後，會自動幫你設好這些變數。
     \begin{itemize}
       \item \mintinline{python}{self.kp} : 即 $K_p$ 的值。
       \item \mintinline{python}{self.ki} : 即 $K_i$ 的值。
       \item \mintinline{python}{self.kd} : 即 $K_d$ 的值。
+      \item \mintinline{python}{self.int_restriction} : 誤差累積的上限，後面
+        會詳細說明。
     \end{itemize}
-  \item 第3..5行：
+    這些變數你就{\bf 不需要在自行設定}了。
+  \item 第7..9行：
     這邊需要你初始化一些之後你所需要的變數。 請注意
     變數可能需要在 \mintinline{python}{self} 下定義，
     否則當這個函數結束後變數就會消失了。
     也就是說你的變數應該會長的像 \mintinline{python}{self.a}
     等等。 在這邊做為範例我們幫你初始化了一個變數
     \mintinline{python}{self.last_time} 為 
-    \mintinline{python}{None} 了。
+    \mintinline{python}{None} 了(你不需要更改這一行)。
     至於要初始化哪些變數，可以接下來需要的時後再決定！
 \end{itemize}
 \subsubsection{\texttt{get\_control(self, t, err, derr)}}
-\begin{minted}[linenos, frame=lines, framesep=2mm]{python3}
+\begin{minted}[linenos, frame=lines, framesep=2mm, firstnumber=last]{python3}
 def get_control(self, t, err, derr):
     if self.last_time is None:
         self.last_time = t
@@ -207,7 +239,7 @@ def get_control(self, t, err, derr):
 程式碼雖然看起來很長，但其實不會很複雜！ 我們一行一行來看！
 \begin{itemize}
   \itemsep=0pt
-  \item 第1行： 這個函數的參數。 第一個 \mintinline{python}{self} 
+  \item 第10行： 定義這個函數，我們看一下他的參數。 第一個 \mintinline{python}{self} 
     顧名思意就是代表自己！ \texttt{t}, \texttt{err}, \texttt{derr}
     則分別代表當前的時間、誤差以及微分向的誤差。 也就是
     \begin{align*}
@@ -219,10 +251,10 @@ def get_control(self, t, err, derr):
     還要傳一個近似的值進來呢？ 其實是因為直接計算的話容易因為感測器誤差
     而出現不可遇期的結果，因此我們會用其他方法(Kalman Filter)幫你算好了。
 
-  \item 第2..4行： 如果這是第一次執行 ($n = 0$) 我們直接回傳 $0$。
+  \item 第11..13行： 如果這是第一次執行 ($n = 0$) 我們直接回傳 $0$。
     這個部分全部幫你寫好了，不需要去動他。
 
-  \item 第6..8行：
+  \item 第15..17行：
     還記得 PID 的公式嗎？ 忘記了也沒關係！ 我們再複習一次
     \begin{alignat*}{5}
       & y[n] &&= \;&&K_p e[n] &&+ K_i \sum_0^{n} e[i] \Delta t_i&&+ K_d \frac{e[n] - e[n-1]}{\Delta t} &&\\
@@ -232,16 +264,16 @@ def get_control(self, t, err, derr):
     現在做為暖身請你修改第 $8$ 行的值，算出 $u_p$ (也就是 \texttt{up})。
     注意到 $e[n] = \texttt{err}$ ， 且 $K_p$ 已經定義在 \mintinline{python}{self.kp} 了。
 
-  \item 第10..12行：
+  \item 第19..21行：
     與剛剛類似，請修改第 $12$ 行的值，算出 $u_d$ (也就是 \texttt{ud})。
 
-  \item 第14..18行：
+  \item 第23..27行：
     最後我們要開始算積分項。 首先我們要算出 $\Delta t$ (\texttt{dt})。
     請由 $\Delta t$ 的定義下手！ 注意到 $t[n-1]$ 被存在 \mintinline{python}{self.last_time}
     裡了！\\
     算完了不要忘記更新 \mintinline{python}{self.last_time} 的值讓下一次計算可以使用！
 
-  \item 第20..22行：
+  \item 第29..31行：
     計算積分的累計！ 也就是要計算
     \[ I = \sum_0^n e[i] \Delta t_i \approx \sum_1^n e[i] \cdot (t[i] - t[i-1]) \]
     咦？ 怎麼下標變成從 $1$ 開始了？ 其實是因為 $n = 1$ 時 $t[i-1] = t[-1]$ 
@@ -251,7 +283,7 @@ def get_control(self, t, err, derr):
     但是要累加在哪一個變數呢？ 我們似乎還沒定義這樣的一個變數呢！ \\
     嘿嘿！ 這時候就要請你在 {\bf 初始化}的時候就定義好囉！
 
-  \item 第24..28行：
+  \item 第33..37行：
     上一步我們計算出了 $I = \sum e[i] \Delta t_i$ ， 但在實際中我們必須
     給這個數字一個閥值！ 否則 $I$ 如果可以無限累積，最後一定會超出馬達可
     以容許的範圍！ 
@@ -267,17 +299,35 @@ def get_control(self, t, err, derr):
             這個情況 $I$ 超過左界，所以同樣的我們令 $I = -I_R$。
     \end{itemize}
 
-  \item 第30..32行：
+  \item 第39..41行：
     最後計算出 $u_i$ ，其實就是乘一個係數而已！
 
-  \item 第30..32行：
+  \item 第43..45行：
     最後的最後別忘了把答案傳回去！
     否則就像考試忘了把答案填在答案卡上一樣！
   
 \end{itemize}
 \subsection{ 測試 }
-如果你已經完成了以上程式，打開模擬器，理論上四軸飛行器應該可以保持平衡了！
-
+如果你已經完成了以上程式，打開模擬器並執行，理論上四軸飛行器應該可以保持平衡了！
+模擬器有以下功能。
+\begin{table}[H]
+  \centering
+  \begin{tabular}{c|c}
+    \keys{H} & 逆時鐘旋轉 \\
+    \keys{J} & 高度上升 \\
+    \keys{K} & 高度下降 \\
+    \keys{L} & 順時鐘旋轉 \\
+    \keys{\arrowkeyup} & 往前傾斜 \\
+    \keys{\arrowkeydown} & 往後傾斜 \\
+    \keys{\arrowkeyleft} & 往左傾斜 \\
+    \keys{\arrowkeyright} & 往右傾斜 \\
+  \end{tabular}
+  \begin{tabular}{c|c}
+    滑鼠左鍵 & 鏡頭旋轉 \\
+    滑鼠右鍵 & 鏡頭平移 \\
+    滑鼠滾輪 & 鏡頭前後 \\
+  \end{tabular}
+\end{table}
 
 \end{document}
 
