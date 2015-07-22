@@ -4,6 +4,7 @@
         "body-parser": "1.13.2",
         "coffee-script": "1.9.3",
         "express": "4.13.1",
-        "python-shell": "0.1.0"
+        "python-shell": "0.1.0",
+        "ws": "0.7.2"
     }
 }

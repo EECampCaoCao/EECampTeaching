@@ -74,3 +74,7 @@ class BaseVirtualDrone(BaseDrone):
         self.motor = np.maximum(np.minimum(motor, 700), 0)
         asyncio.sleep(0.01)
 
+    @asyncio.coroutine
+    def stop(self):
+        pass
+

@@ -78,7 +78,8 @@ class Scene
       theta = new THREE.Euler()
       theta.setFromRotationMatrix(ori)
       root.updateChart t, [theta._x, theta._y, theta._z, 
-                           motor[0], motor[1], motor[2], motor[3]]
+                           motor[0], motor[1], motor[2], motor[3],
+                           pos.z]
       @lastUpdateTime = t.getTime()
 
     @drone.position.copy(pos)
@@ -97,3 +98,11 @@ class Scene
     @animate()
 
 root.scene = new Scene()
+
+$ window
+  .resize () ->
+    wrapper = $ '#canvas-wrapper'
+    [w, h] = [wrapper.width(), wrapper.height()]
+    root.scene.renderer.setSize w, h
+    root.scene.camera.aspect	= w / h
+		root.scene.camera.updateProjectionMatrix();

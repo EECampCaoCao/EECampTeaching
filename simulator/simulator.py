@@ -66,7 +66,6 @@ class Simulator(object):
     @asyncio.coroutine
     def stop(self):
         yield from self.controller.stop()
-        print('drone_stop')
         yield from self.drone.stop()
         # logger.debug('plotting...')
         # plt.plot(self._AOO)

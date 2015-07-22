@@ -22,7 +22,8 @@
     };
     ws = new ReconnectingWebSocket(root.wsuri, null, options);
     ws.onopen = function() {
-      return console.log("connected to", root.wsurl);
+      console.log("connected to", root.wsuri);
+      return root.onSocketConnected();
     };
     ws.onmessage = function(evt) {
       var reader;
@@ -38,12 +39,34 @@
       return console.log(e);
     };
     ws.onclose = function() {
-      return console.log("closed");
+      console.log("closed");
+      return root.onSocketClosed();
     };
     ws.sendJSON = function(obj) {
       return this.send(JSON.stringify(obj));
     };
     return root.ws = ws;
+  };
+
+  root.connectPythonErrSocket = function() {
+    var ws2;
+    ws2 = new WebSocket('ws://localhost:4000/ws/');
+    ws2.onopen = function() {
+      return console.log("connected to 4000");
+    };
+    ws2.onmessage = function(evt) {
+      var data, errMesg;
+      data = evt.data;
+      data = JSON.parse(data);
+      errMesg = data.data;
+      return root.onPythonError(errMesg, data.isError);
+    };
+    ws2.onerror = function(e) {
+      return console.log(e);
+    };
+    return ws2.onclose = function() {
+      return console.log("closed");
+    };
   };
 
 }).call(this);

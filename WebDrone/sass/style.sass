@@ -122,8 +122,8 @@ body
 
 #code-wrapper
   position: absolute
-  left: 20%
-  right: 20%
+  left: 10%
+  right: 10%
   top: 10%
   bottom: 10%
   z-index: 100
@@ -134,10 +134,23 @@ body
   display: flex
   flex-flow: column
 
-#code-area
+#code-error-wrapper
   height: 100%
+  display: flex
+  flex-flow: row nowrap
   margin-bottom: 20px
+
+#code-area
+  width: 70%
+  height: 100%
   font-size: 18px
+  margin-right: 20px
+
+#error-area
+  width: 30%
+  //height: 100%
+  font-family: monospace
+  overflow: auto
 
 #code-button-area
   display: flex
@@ -146,3 +159,7 @@ body
 
   button
     margin-left: 20px
+
+.ace-editor-error
+  background-color: red
+  position: absolute

@@ -6,6 +6,14 @@ express = require('express')
 app = express()
 bodyParser = require("body-parser")
 pythonShell = require('python-shell')
+WebSocketServer = require('ws').Server
+
+wss = new WebSocketServer port: 4000
+wss.broadcast = (data) ->
+  wss.clients.forEach (cl) ->
+    cl.send data
+
+
 pythonInstance = null
 pythonStarted = false
 
@@ -15,27 +23,41 @@ app.use bodyParser.urlencoded(
   extended: false
 )
 
-app.post '/', (req, res) ->
-  console.log req.body
+startPython = () ->
+  if pythonStarted
+    pythonInstance.childProcess.kill('SIGKILL')
+  pythonStarted = true
+  console.log 'Python starting'
   options =
     pythonPath: 'python3'
     scriptPath: '.'
     args: ['-s', 'simple']
+  pythonInstance = new pythonShell 'main.py', options
+  console.log 'Python started'
+  pythonInstance.on 'message', (mes) ->
+    console.log 'Python says: ' + mes
+  pythonInstance.on 'error', (err) ->
+    errString = "" + err
+    if errString != 'Error: process exited with code null'
+      wss.broadcast JSON.stringify
+        action: 'error'
+        data: "" + err
+        isError: true
+    else
+      wss.broadcast JSON.stringify
+        action: 'error'
+        data: "Your program successfully finished."
+        isError: false
+
+app.post '/', (req, res) ->
+  console.log req.body
 
   if 'action' not of req.body
     res.sendStatus 404
     return
 
   if req.body.action == 'start'
-    return if pythonStarted
-    pythonStarted = true
-    console.log 'Python starting'
-    pythonInstance = new pythonShell 'main.py', options
-    console.log 'Python started'
-    pythonInstance.on 'message', (mes) ->
-      console.log 'Python says: ' + mes
-    pythonInstance.on 'error', (err) ->
-      console.log 'Python err: ' + err
+    startPython()
     res.sendStatus 200
     return
 
@@ -52,24 +74,9 @@ app.post '/', (req, res) ->
   res.sendStatus 404
 
 app.post '/runCode', (req, res) ->
-  #console.log req.body.code
   fs.writeFile (__dirname+'/mymath/mypid.py'), req.body.code, (err) ->
     return console.log(err) if err
-    options =
-      pythonPath: 'python3'
-      scriptPath: '.'
-      args: ['-s', 'simple']
-    console.log 'Python starting'
-    if pythonStarted
-      pythonInstance.childProcess.kill('SIGKILL')
-    pythonStarted = true
-    pythonInstance = new pythonShell 'main.py', options
-    console.log 'Python started'
-    pythonInstance.on 'message', (mes) ->
-      console.log 'Python says: ' + mes
-    pythonInstance.on 'error', (err) ->
-      console.log 'Python err: ' + err
-
+    startPython()
   res.sendStatus 200
 
 app.get '/mypid.py', (req, res) ->

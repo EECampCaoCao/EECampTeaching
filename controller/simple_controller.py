@@ -29,7 +29,8 @@ class SimpleController(BaseController):
 
         self.target_theta = np.array([0., 0., 0.])
         self.target_omegaz = 0.
-        self.target_zacc = 9.8
+        self.target_vz = 0.
+        self.target_z = 0.
 
         self.pid_thetaxy = np.array([48., 30., 20.])
         self.pid_tweakper = np.array([1., 1., 1.])
@@ -41,6 +42,10 @@ class SimpleController(BaseController):
             'z': PID(60., 30., 20., imax=800),
         }
 
+    def update_targets(self, dt):
+        self.target_z += dt * self.target_vz
+        self.target_theta[2] += dt * self.target_omegaz
+
     @asyncio.coroutine
     def update(self):
         '''updates the motors according to the sensors' data
@@ -48,7 +53,7 @@ class SimpleController(BaseController):
         now = self.loop.time()
         dt = now - self.last_time
 
-        self.target_theta[2] += dt * self.target_omegaz
+        self.update_targets(dt)
 
         acc, theta, omega, z = yield from self.drone.get_motion_sensors()
 
@@ -69,7 +74,7 @@ class SimpleController(BaseController):
         zacc_smooth = self.accz_momentum.append_value(now, acc[2])
 
         theta_error = self.target_theta - theta_smooth
-        zacc_error  = self.target_zacc  - zacc_smooth
+        theta_error[2] = (theta_error[2] + np.pi) % (np.pi * 2) - np.pi
 
         theta_x_action = self.pids['theta_x'].get_control(
             now, theta_error[0], 0 - omega_smooth[0]
@@ -82,7 +87,7 @@ class SimpleController(BaseController):
         )
 
         thrust_action = self.pids['z'].get_control(
-            now, 0 - z_pred[0], 0 - z_pred[1]
+            now, self.target_z - z_pred[0], 0 - z_pred[1]
         )
 
         action = np.array([-theta_y_action +  theta_z_action,
@@ -137,12 +142,11 @@ class SimpleController(BaseController):
         elif action == 'tweak':
             self.tweak_pid(*args)
     
-    def preform_control(self, thrust, theta_x, theta_y, omega_z):
-        self.target_zacc = 9.8 + thrust
+    def preform_control(self, vz, theta_x, theta_y, omega_z):
+        self.target_vz = vz
         self.target_theta[0] = theta_x
         self.target_theta[1] = theta_y
-        #print(theta_x, theta_y)
-        #self.target_omegaz = omega_z
+        self.target_omegaz = omega_z
 
     def tweak_pid(self, type_, per):
         if type_ == 'P':

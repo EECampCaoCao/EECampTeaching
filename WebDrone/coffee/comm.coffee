@@ -16,7 +16,8 @@ root.connect = () ->
   ws = new ReconnectingWebSocket(root.wsuri, null, options)
 
   ws.onopen = () ->
-    console.log "connected to", root.wsurl
+    console.log "connected to", root.wsuri
+    root.onSocketConnected()
 
   ws.onmessage = (evt) ->
     reader = new FileReader()
@@ -30,12 +31,29 @@ root.connect = () ->
 
   ws.onclose = () ->
     console.log "closed"
+    root.onSocketClosed()
 
   ws.sendJSON = (obj) ->
     @send JSON.stringify obj
 
   root.ws = ws
 
+root.connectPythonErrSocket = () ->
+  ws2 = new WebSocket('ws://localhost:4000/ws/')
 
+  ws2.onopen = () ->
+    console.log "connected to 4000"
+
+  ws2.onmessage = (evt) ->
+    data = evt.data
+    data = JSON.parse(data)
+    errMesg = data.data
+    root.onPythonError errMesg, data.isError
+
+  ws2.onerror = (e) ->
+    console.log e
+
+  ws2.onclose = () ->
+    console.log "closed"
 
 

@@ -1,5 +1,6 @@
 window.App = {}
 root = window.App
+Range = ace.require('ace/range').Range
 
 $(window)
   .on 'beforeunload', () ->
@@ -8,13 +9,12 @@ $(window)
 $ (event) ->
 
   root.connect()
+  root.connectPythonErrSocket()
   root.scene.start()
 
-  $ '#ss-btn'
+  $ '#run-btn'
     .click () ->
-      console.log 456
-      $.post '/', {action: 'start'}
-      root.ws.open()
+      root.sendCodeAndRun()
 
   $ '#start-btn'
     .click () ->
@@ -25,13 +25,13 @@ $ (event) ->
 
   $ '#stop-btn'
     .click () ->
-      console.log 123
       $.post '/',
         action: 'stop'
       root.ws.close()
 
   $ '#code-btn'
     .click () ->
+      return if not root.codeLoaded
       $ '#code-wrapper'
         .show 200, () ->
           $ '#code-area textarea'
@@ -66,9 +66,77 @@ $ (event) ->
   editor.getSession().setMode "ace/mode/python"
   root.editor = editor
 
+  root.sendCodeAndRun = () ->
+    $.post '/runCode',
+      code: root.editor.getValue()
+    root.ws.open()
+    $ '#code-wrapper'
+      .hide()
+    root.clearMarkers()
+
+    Materialize.toast 'The program is starting!', 2000
+
+  root.showDronePanel = () ->
+    $ '#drone-control-panel'
+      .show()
+      .removeClass('animated bounceOut')
+      .addClass('animated bounceIn')
+
+  root.hideDronePanel = () ->
+    $ '#drone-control-panel'
+      .removeClass('animated bounceIn')
+      .addClass('animated bounceOut')
+      .one 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', () ->
+        me = $ '#drone-control-panel'
+        if me.hasClass('bounceOut')
+          me.hide()
+
+  root.onSocketConnected = () ->
+    root.showDronePanel()
+
+  root.onSocketClosed = () ->
+    root.hideDronePanel()
+
+  root.clearMarkers = () ->
+    markers = root.editor.session.getMarkers()
+    window.a = markers
+    Object.keys(markers)
+      .map (x) -> markers[x]
+      .filter (x) -> x.clazz == 'ace-editor-error'
+      .forEach (x) ->
+        console.log x
+        root.editor.session.removeMarker x.id
+
+  root.onPythonError = (err, flag) ->
+    err = err.replace /\n/g, '<br>'
+    $ '#error-text'
+      .html(err)
+
+    if not flag
+      $ '#error-text'
+        .removeClass('red').addClass('green')
+      return
+
+    $ '#error-text'
+      .removeClass('green').addClass('red')
+    pat = /mypid.py", line (\d+)/g
+    mat = pat.exec(err)
+    if mat
+      ln = mat[1] - 1
+      root.errorLine = ln
+      root.editor.session.addMarker(
+        new Range(ln, 0, ln, 100),
+        "ace-editor-error",
+        "fullLine",
+        false
+      )
+    $ '#code-wrapper'
+      .show 200
+
   $.get '/mypid.py', (data) ->
-    console.log data
     root.editor.setValue data
+    root.editor.gotoLine(0, 0, true)
+    root.codeLoaded = true
 
 
   $ '#return-btn'
@@ -77,9 +145,7 @@ $ (event) ->
       $ '#code-wrapper'
         .hide 200
 
-  $ '#run-btn'
+  $ '#code-run-btn'
     .click () ->
-      $.post '/runCode',
-        code: root.editor.getValue()
-      root.ws.open()
+      root.sendCodeAndRun()
   

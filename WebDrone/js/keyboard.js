@@ -8,26 +8,38 @@
     37: false,
     38: false,
     39: false,
-    40: false
+    40: false,
+    72: false,
+    74: false,
+    75: false,
+    76: false
   };
 
   keyMap = {
     37: 'left',
     38: 'up',
     39: 'right',
-    40: 'down'
+    40: 'down',
+    72: 'h',
+    74: 'j',
+    75: 'k',
+    76: 'l'
   };
 
   $(function() {
     root.sendControl = function() {
-      var C, thetaX, thetaY;
+      var C, D, E, omegaZ, thetaX, thetaY, vZ;
       C = 20.0 * Math.PI / 180;
+      D = 30.0 * Math.PI / 180;
+      E = 1;
       thetaX = -C * keyFlag[38] + C * keyFlag[40];
       thetaY = -C * keyFlag[37] + C * keyFlag[39];
+      omegaZ = D * keyFlag[72] - D * keyFlag[76];
+      vZ = -E * keyFlag[74] + E * keyFlag[75];
       console.log(thetaX);
       return this.ws.sendJSON({
         action: 'control',
-        args: [0, thetaX, thetaY, 0]
+        args: [vZ, thetaX, thetaY, omegaZ]
       });
     };
     document.addEventListener('keydown', function(event) {
