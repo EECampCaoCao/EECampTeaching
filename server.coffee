@@ -30,7 +30,7 @@ startPython = () ->
   console.log 'Python starting'
   options =
     pythonPath: 'python3'
-    scriptPath: '.'
+    scriptPath: 'python-quadcopter/'
     args: ['-s', 'simple']
   pythonInstance = new pythonShell 'main.py', options
   console.log 'Python started'
@@ -73,16 +73,19 @@ app.post '/', (req, res) ->
     return
   res.sendStatus 404
 
+MYPID_FILE = 'python-quadcopter/mymath/mypid.py'
+
 app.post '/runCode', (req, res) ->
-  fs.writeFile (__dirname+'/mymath/mypid.py'), req.body.code, (err) ->
+  fs.writeFile (__dirname+'/'+MYPID_FILE)
+  , req.body.code, (err) ->
     return console.log(err) if err
     startPython()
   res.sendStatus 200
 
 app.get '/mypid.py', (req, res) ->
-  res.sendFile __dirname + '/mymath/mypid.py'
+  res.sendFile __dirname+'/'+MYPID_FILE
 
-server = app.listen 8080, () ->
+server = app.listen 8000, () ->
   host = server.address().address
   port = server.address().port
 

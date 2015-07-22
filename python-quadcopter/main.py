@@ -9,11 +9,11 @@ from logsetting import log_setup
 from importlib import import_module
 
 from os import listdir
-from os.path import curdir, abspath, join as pjoin
+from os.path import dirname, abspath, join as pjoin
 
 scripts = list(map(lambda x: x[:-3], 
                filter(lambda x: x[-3:] == '.py',
-    listdir(pjoin(abspath(curdir), 'scripts')))))
+    listdir(pjoin(dirname(abspath(__file__)), 'scripts')))))
 
 parser = argparse.ArgumentParser(description='Drone control and simulation.')
 parser.add_argument('-s', '--script', help='which script to execute', type=str,
