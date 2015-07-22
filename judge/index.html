@@ -1,0 +1,42 @@
+<html ng-app="judge">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="stylesheets/materialize.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="stylesheets/animate.min.css">
+    <title>My first Three.js app</title>
+  </head>
+  <body>
+    <div id="main-wrapper" class="container">
+      <div class="row" ng-controller="problemController as controller">
+        <div class="col s8 offset-s2" ng-repeat="problem in controller.problems" 
+          ng-controller="codeController">
+          <div class="card">
+            <div class="card-content black-text">
+              <span class="black-text card-title">Problem {{$index}}. {{problem.id}}</span>
+              <hr/>
+              <p>
+                {{problem.desc}} 
+              </p>
+              <hr/>
+              <div id="{{problem.id}}-editor" class="ace-edit" after-render>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/reconnecting-websocket.js"></script>
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/jquery.canvasjs.min.js"></script>
+    <script src="js/underscore-min.js"></script>
+    <script src="js/materialize.min.js"></script>
+    <script src="js/ace-builds/src/ace.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/ang.js"></script>
+
+  </body>
+</html>
+

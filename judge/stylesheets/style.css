@@ -1,0 +1,10 @@
+/* line 1, ../sass/style.sass */
+#main-wrapper {
+  padding-top: 20px;
+}
+
+/* line 5, ../sass/style.sass */
+#prob1-editor {
+  width: 100%;
+  height: 300px;
+}
