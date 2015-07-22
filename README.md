@@ -1,11 +1,13 @@
 # Dependency
 ```
-pip3 install websockets
-pip3 install pyserial
+sudo apt-get install nodejs npm
+npm install -g body-parser express python-shell coffeescript
+sudo pip3 install websockets
+sudo pip3 install pyserial
 ```
 # How to run
 ```
-python3 main.py -m sim
+coffee server.js -n
 ```
 
 * important

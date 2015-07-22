@@ -2,7 +2,7 @@ root = window.App
 
 $ () ->
 
-    dps = [[], [], [], [], [], [], []]
+    dps = [[], [], [], [], [], [], [], []]
     angleChart = new CanvasJS.Chart "plot0",
       data: [
         markerType: "none"
@@ -63,7 +63,22 @@ $ () ->
         verticalAlign: "top"
         horizontalAlign: "right"
 
-    chartList = [angleChart, motorChart]
+    zChart = new CanvasJS.Chart "plot2",
+      data: [
+        markerType: "none"
+        type: "line"
+        dataPoints: dps[7]
+        legendText: "高度"
+        showInLegend: true
+      ]
+      axisX:
+        valueFormatString: "ss.fff"
+      legend:
+        fontSize: 20
+        verticalAlign: "top"
+        horizontalAlign: "right"
+
+    chartList = [angleChart, motorChart, zChart]
     xVal = 0
     yVal = 100
     updateInterval = 20
@@ -72,11 +87,13 @@ $ () ->
 
     root.updateChart = (t, arr) ->
       cur = (new Date())
-      for i in [0..6]
+      for i in [0..7]
         dps[i].push(
           x: t
           y: arr[i]
         )
+        if dps[i].length > 200
+          dps[i].shift()
       curChart.render()
 
     root.changeChart = (type) ->
@@ -85,5 +102,9 @@ $ () ->
       curChart.render()
       $('.plot-wrapper').hide()
       $('#plot' + type).show()
+
+    root.clearChart = () ->
+      for x in dps
+        x.length = 0
       
 

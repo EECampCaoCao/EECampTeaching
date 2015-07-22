@@ -5,8 +5,8 @@
   root = window.App;
 
   $(function() {
-    var angleChart, chartList, curChart, dataLength, dps, motorChart, updateInterval, xVal, yVal;
-    dps = [[], [], [], [], [], [], []];
+    var angleChart, chartList, curChart, dataLength, dps, motorChart, updateInterval, xVal, yVal, zChart;
+    dps = [[], [], [], [], [], [], [], []];
     angleChart = new CanvasJS.Chart("plot0", {
       data: [
         {
@@ -75,7 +75,26 @@
         horizontalAlign: "right"
       }
     });
-    chartList = [angleChart, motorChart];
+    zChart = new CanvasJS.Chart("plot2", {
+      data: [
+        {
+          markerType: "none",
+          type: "line",
+          dataPoints: dps[7],
+          legendText: "高度",
+          showInLegend: true
+        }
+      ],
+      axisX: {
+        valueFormatString: "ss.fff"
+      },
+      legend: {
+        fontSize: 20,
+        verticalAlign: "top",
+        horizontalAlign: "right"
+      }
+    });
+    chartList = [angleChart, motorChart, zChart];
     xVal = 0;
     yVal = 100;
     updateInterval = 20;
@@ -84,20 +103,32 @@
     root.updateChart = function(t, arr) {
       var cur, i, j;
       cur = new Date();
-      for (i = j = 0; j <= 6; i = ++j) {
+      for (i = j = 0; j <= 7; i = ++j) {
         dps[i].push({
           x: t,
           y: arr[i]
         });
+        if (dps[i].length > 200) {
+          dps[i].shift();
+        }
       }
       return curChart.render();
     };
-    return root.changeChart = function(type) {
+    root.changeChart = function(type) {
       type = parseInt(type);
       curChart = chartList[type];
       curChart.render();
       $('.plot-wrapper').hide();
       return $('#plot' + type).show();
+    };
+    return root.clearChart = function() {
+      var j, len, results, x;
+      results = [];
+      for (j = 0, len = dps.length; j < len; j++) {
+        x = dps[j];
+        results.push(x.length = 0);
+      }
+      return results;
     };
   });
 

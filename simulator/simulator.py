@@ -66,7 +66,6 @@ class Simulator(object):
     @asyncio.coroutine
     def stop(self):
         yield from self.controller.stop()
-        print('drone_stop')
         yield from self.drone.stop()
         # logger.debug('plotting...')
         # plt.plot(self._AOO)
@@ -76,15 +75,15 @@ class Simulator(object):
         socket_server = SimulatorSocketServer(self)
         start_socket_server = websockets.serve(socket_server,
             '0.0.0.0', 3000)
-        start_HTTPserver()
+        #start_HTTPserver()
 
-        @asyncio.coroutine
-        def open_browser():
-            yield from asyncio.sleep(1.)
-            webbrowser.open(
-                "http://localhost:8000/WebDrone/index.html"
-            )
+        #@asyncio.coroutine
+        #def open_browser():
+            #yield from asyncio.sleep(1.)
+            #webbrowser.open(
+                #"http://localhost:8000/WebDrone/index.html"
+            #)
 
-        self.loop.create_task(open_browser())
+        #self.loop.create_task(open_browser())
         return self.loop.run_until_complete(start_socket_server)
 

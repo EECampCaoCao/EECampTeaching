@@ -55,11 +55,12 @@ class SimulatorSocketServer(object):
     @asyncio.coroutine
     def recv_loop(self, ws):
         while ws.open:
-            data = json.loads((yield from self._recv(ws)))
-            if 'action' not in data:
-                logger.warning('No action in data')
-                return
-            yield from self._preform_action(data['action'], data['args'])
+            data = yield from self._recv(ws)
+            if data is not None: 
+                data = json.loads(data)
+                if 'action' in data:
+                    yield from self._preform_action(data['action'], data['args'])
+                else: logger.warning('No action in data')
             #yield from asyncio.sleep(0.02)
 
     @asyncio.coroutine

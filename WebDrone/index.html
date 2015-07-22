@@ -4,6 +4,7 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/materialize.css">
     <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="stylesheets/animate.min.css">
     <title>My first Three.js app</title>
   </head>
   <body>
@@ -17,48 +18,78 @@
         </div>
 
         <div id="control-panel">
+          <button class="btn waves-effect waves-light control-panel-button red"
+            id="run-btn"><i class="material-icons left">play_for_work</i> Run </button>
           <button class="btn waves-effect waves-light control-panel-button"
-            id="start-btn"> Start </button>
-          <button class="btn waves-effect waves-light control-panel-button"> Stop </button>
-          <div id="range-panel">
-            <div class="range-field">
-              <div>P</div> = <div>100%</div>
-              <input type="range" id="range-P" min="0" max="200"/>
-            </div>
-            <div class="range-field">
-              <div>I</div> = <div>100%</div>
-              <input type="range" id="range-I" min="0" max="200"/>
-            </div>
-            <div class="range-field">
-              <div>D</div> = <div>100%</div>
-              <input type="range" id="range-D" min="0" max="200"/>
+            id="code-btn"><i class="material-icons left">code</i> Code </button>
+
+          <div id="drone-control-panel" style="display: none">
+            <button class="btn waves-effect waves-light control-panel-button blue"
+              id="start-btn"><i class="material-icons left">play_arrow</i> Start </button>
+            <button class="btn waves-effect waves-light control-panel-button blue"
+              id="stop-btn"><i class="material-icons left">stop</i> Stop </button>
+            <div id="range-panel">
+              <div class="range-field">
+                <div>P</div> = <div>100%</div>
+                <input type="range" id="range-P" min="0" max="200"/>
+              </div>
+              <div class="range-field">
+                <div>I</div> = <div>100%</div>
+                <input type="range" id="range-I" min="0" max="200"/>
+              </div>
+              <div class="range-field">
+                <div>D</div> = <div>100%</div>
+                <input type="range" id="range-D" min="0" max="200"/>
+              </div>
             </div>
           </div>
+
         </div>
       </div>
       <div id="bottom-wrapper">
 
         <div class="plot-wrapper" id="plot0"></div>
         <div class="plot-wrapper" id="plot1" style="display: none"></div>
+        <div class="plot-wrapper" id="plot2" style="display: none"></div>
 
         <div id="switch-wrapper">
           <ul id="switch-panel">
             <li class="active" data="0"> <a> 角度 </a> </li>
             <li data="1"> <a> 螺旋槳 </a> </li>
+            <li data="2"> <a> 高度 </a> </li>
             <!--<li> <a> 123 </a> </li>-->
           </ul>
         </div>
 
       </div>
+
+      <div id="code-wrapper" style="display: none">
+        <div class="card-panel z-depth-3" id="code-card">
+          <div id="code-error-wrapper">
+            <div id="code-area"> </div>
+            <div id="error-area">
+              <div id="error-text" class="green lighten-1 card-panel"> </div>
+            </div>
+          </div>
+          <div id="code-button-area">
+          <button class="btn waves-effect waves-light control-panel-button red"
+            id="code-run-btn"><i class="material-icons left">play_for_work</i> Run </button>
+          <button class="btn waves-effect waves-light control-panel-button"
+            id="return-btn"><i class="material-icons left">call_missed</i> Return </button>
+          </div>
+        </div>
+      </div>
     </div>
+    <script src="js/reconnecting-websocket.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js"></script>
     <script src="js/three.js/loaders/ColladaLoader.js"></script>
     <script src="js/three.js/controls/TrackballControls.js"></script>
     <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/jquery.canvasjs.min.js"></script>
     <script src="js/underscore-min.js"></script>
     <script src="js/materialize.min.js"></script>
     <script src="http://code.highcharts.com/stock/highstock.js"></script>
-    <script src="js/jquery.canvasjs.min.js"></script>
+    <script src="js/ace-builds/src/ace.js"></script>
     <script src="js/main.js"></script>
     <script src="js/comm.js"></script>
     <script src="js/drone.js"></script>

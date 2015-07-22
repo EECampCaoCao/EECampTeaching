@@ -19,14 +19,14 @@ body {
   overflow: hidden;
 }
 
-/* line 20, ../sass/style.sass */
+/* line 21, ../sass/style.sass */
 #top-wrapper {
   display: flex;
   flex-flow: row;
   height: 70%;
 }
 
-/* line 25, ../sass/style.sass */
+/* line 26, ../sass/style.sass */
 #control-panel {
   width: 20%;
   background-color: #FFF;
@@ -38,13 +38,13 @@ body {
   padding-left: 10px;
   padding-right: 10px;
 }
-/* line 37, ../sass/style.sass */
+/* line 38, ../sass/style.sass */
 #control-panel .control-panel-button {
   width: 100%;
   margin-bottom: 20px;
 }
 
-/* line 42, ../sass/style.sass */
+/* line 43, ../sass/style.sass */
 #main-card {
   position: relative;
   width: 75%;
@@ -52,21 +52,21 @@ body {
   margin-right: 5%;
 }
 
-/* line 48, ../sass/style.sass */
+/* line 49, ../sass/style.sass */
 #canvas-wrapper {
   position: relative;
   height: 100%;
   width: 100%;
 }
 
-/* line 54, ../sass/style.sass */
+/* line 55, ../sass/style.sass */
 #main-canvas {
   margin: 0 auto;
   /*margin-top: 20px */
   display: block;
 }
 
-/* line 59, ../sass/style.sass */
+/* line 60, ../sass/style.sass */
 #connect {
   position: fixed;
   top: 50;
@@ -74,21 +74,21 @@ body {
   z-index: 10;
 }
 
-/* line 65, ../sass/style.sass */
+/* line 66, ../sass/style.sass */
 #reset-btn {
   position: absolute;
   right: 40px;
   bottom: 40px;
 }
 
-/* line 70, ../sass/style.sass */
+/* line 71, ../sass/style.sass */
 #bottom-wrapper {
   display: flex;
   flex-flow: row nowrap;
   height: 30%;
 }
 
-/* line 75, ../sass/style.sass */
+/* line 76, ../sass/style.sass */
 #switch-wrapper {
   display: flex;
   flex-flow: column;
@@ -97,60 +97,118 @@ body {
   width: 20%;
 }
 
-/* line 82, ../sass/style.sass */
+/* line 83, ../sass/style.sass */
 .plot-wrapper {
   width: 75%;
   margin-right: 5%;
   height: 100%;
 }
 
-/* line 87, ../sass/style.sass */
+/* line 88, ../sass/style.sass */
 #range-panel {
   width: 100%;
 }
 
-/* line 90, ../sass/style.sass */
+/* line 91, ../sass/style.sass */
 .range-field {
   font-size: 16px;
 }
-/* line 93, ../sass/style.sass */
+/* line 94, ../sass/style.sass */
 .range-field > div:first-of-type {
   display: inline-block;
   width: 20px;
 }
-/* line 97, ../sass/style.sass */
+/* line 98, ../sass/style.sass */
 .range-field > div:nth-of-type(2) {
   display: inline-block;
   margin-left: 10px;
   width: 80px;
 }
 
-/* line 102, ../sass/style.sass */
+/* line 103, ../sass/style.sass */
 #switch-panel {
   margin-left: 10px;
 }
-/* line 104, ../sass/style.sass */
+/* line 105, ../sass/style.sass */
 #switch-panel li {
   width: 300px;
   padding-left: 25px;
   cursor: pointer;
 }
-/* line 107, ../sass/style.sass */
+/* line 108, ../sass/style.sass */
 #switch-panel li.active {
   background-color: #DDD;
   padding-left: 23px;
   border-left: 2px solid #EA4A4F;
 }
-/* line 111, ../sass/style.sass */
+/* line 112, ../sass/style.sass */
 #switch-panel li:hover {
   padding-left: 24px;
   border-left: 1px solid #EA4A4F;
 }
-/* line 115, ../sass/style.sass */
+/* line 116, ../sass/style.sass */
 #switch-panel a {
   text-decoration: none;
   color: #333;
   line-height: 30px;
   font-size: 18px;
   width: 100%;
+}
+
+/* line 123, ../sass/style.sass */
+#code-wrapper {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 10%;
+  bottom: 10%;
+  z-index: 100;
+}
+
+/* line 131, ../sass/style.sass */
+#code-card {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+}
+
+/* line 137, ../sass/style.sass */
+#code-error-wrapper {
+  height: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  margin-bottom: 20px;
+}
+
+/* line 143, ../sass/style.sass */
+#code-area {
+  width: 70%;
+  height: 100%;
+  font-size: 18px;
+  margin-right: 20px;
+}
+
+/* line 149, ../sass/style.sass */
+#error-area {
+  width: 30%;
+  font-family: monospace;
+  overflow: auto;
+}
+
+/* line 155, ../sass/style.sass */
+#code-button-area {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+}
+/* line 160, ../sass/style.sass */
+#code-button-area button {
+  margin-left: 20px;
+}
+
+/* line 163, ../sass/style.sass */
+.ace-editor-error {
+  background-color: red;
+  position: absolute;
 }
