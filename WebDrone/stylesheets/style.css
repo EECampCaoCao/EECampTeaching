@@ -164,8 +164,8 @@ body {
 /* line 128, ../sass/style.sass */
 #code-wrapper {
   position: absolute;
-  left: 10%;
-  right: 10%;
+  left: 6%;
+  right: 6%;
   top: 10%;
   bottom: 10%;
   z-index: 100;
@@ -191,29 +191,30 @@ body {
 #code-area {
   width: 70%;
   height: 100%;
-  font-size: 18px;
+  font-family: "monospace";
+  font-size: 16px;
   margin-right: 20px;
 }
 
-/* line 154, ../sass/style.sass */
+/* line 155, ../sass/style.sass */
 #error-area {
   width: 30%;
-  font-family: monospace;
+  font-family: "monospace";
   overflow: auto;
 }
 
-/* line 160, ../sass/style.sass */
+/* line 161, ../sass/style.sass */
 #code-button-area {
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-end;
 }
-/* line 165, ../sass/style.sass */
+/* line 166, ../sass/style.sass */
 #code-button-area button {
   margin-left: 20px;
 }
 
-/* line 168, ../sass/style.sass */
+/* line 169, ../sass/style.sass */
 .ace-editor-error {
   background-color: red;
   position: absolute;
